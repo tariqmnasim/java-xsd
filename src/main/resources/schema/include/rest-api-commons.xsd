@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.infonova.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:simpleType name="nonNegativeLong">
+<xs:restriction base="xs:long">
+<xs:minInclusive value="0"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="positiveLong">
+<xs:restriction base="xs:long">
+<xs:minInclusive value="1"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="NonEmptyString">
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="faultInfo" type="FaultInfo"/>
+<xs:complexType name="FaultInfo">
+<xs:sequence>
+<xs:element name="errorCode" type="xs:string"/>
+<xs:element name="errorMessage" type="xs:string"/>
+<xs:element minOccurs="0" name="arguments">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="idResponse" type="IdResponse"/>
+<xs:complexType name="IdResponse">
+<xs:sequence>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="id" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="idResponseList" type="IdResponseList"/>
+<xs:complexType name="IdResponseList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="idResponse" type="IdResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractPagedList">
+<xs:attributeGroup ref="PagingAttributes"/>
+</xs:complexType>
+<xs:attributeGroup name="PagingAttributes">
+<xs:attribute name="page" type="positiveLong"/>
+<xs:attribute name="pageSize" type="positiveLong"/>
+<xs:attribute name="totalNumberOfPages" type="nonNegativeLong"/>
+<xs:attribute name="totalNumberOfEntries" type="nonNegativeLong"/>
+</xs:attributeGroup>
+<xs:complexType abstract="true" name="AbstractAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+<xs:element minOccurs="0" name="streetName" type="xs:string"/>
+<xs:element minOccurs="0" name="countryKey" type="xs:string"/>
+<xs:element minOccurs="0" name="propertyName" type="xs:string"/>
+<xs:element minOccurs="0" name="postalDeliveryTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="partPostalNumberPrefix" type="xs:string"/>
+<xs:element minOccurs="0" name="partPostalNumberPostfix" type="xs:string"/>
+<xs:element minOccurs="0" name="partPostalNumber" type="xs:long"/>
+<xs:element minOccurs="0" name="flatUnitTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="floorLevelTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="partUnitNumber" type="xs:int"/>
+<xs:element minOccurs="0" name="partUnitNumberSuffix" type="xs:string"/>
+<xs:element minOccurs="0" name="levelNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="streetNumber1" type="xs:int"/>
+<xs:element minOccurs="0" name="streetNumber1Suffix" type="xs:string"/>
+<xs:element minOccurs="0" name="streetNumber2" type="xs:int"/>
+<xs:element minOccurs="0" name="streetNumber2Suffix" type="xs:string"/>
+<xs:element minOccurs="0" name="streetTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="streetSuffixKey" type="xs:string"/>
+<xs:element minOccurs="0" name="stateKey" type="xs:string"/>
+<xs:element minOccurs="0" name="customField1" type="xs:string"/>
+<xs:element minOccurs="0" name="customField2" type="xs:string"/>
+<xs:element minOccurs="0" name="customField3" type="xs:string"/>
+<xs:element minOccurs="0" name="customField4" type="xs:string"/>
+<xs:element minOccurs="0" name="referenceId" type="xs:long"/>
+<xs:element minOccurs="0" name="referenceSystem" type="xs:string"/>
+<xs:element minOccurs="0" name="validated" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OfferDisplayCategory">
+<xs:sequence>
+<xs:element name="categoryKey" type="xs:string"/>
+<xs:element name="displayName" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="displayOrder" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OfferDisplayCategoryReferenceList">
+<xs:annotation>
+<xs:documentation>
+A list of offer category keys that determine the offers categories.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="offerDisplayCategoryReference">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="categoryKey" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FeatureGroupDisplayCategory">
+<xs:sequence>
+<xs:element name="key" type="xs:string"/>
+<xs:element name="displayName" type="xs:string"/>
+<xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
+</xs:sequence>
+<xs:attribute name="collapsed" type="xs:boolean" use="required"/>
+</xs:complexType>
+<xs:simpleType name="dateWithOptionalTime">
+<xs:union memberTypes="xs:date xs:dateTime"/>
+</xs:simpleType>
+<xs:simpleType name="isoCurrency">
+<xs:restriction base="xs:normalizedString">
+<xs:minLength fixed="true" value="3"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

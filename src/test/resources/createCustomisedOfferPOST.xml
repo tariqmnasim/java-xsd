@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CreateCustomizedOffer xmlns="http://www.travellazy.com/product/model">
+    <priority>4</priority>
+    <baseOffer>
+        <offerKey>HPCPortVSO01Offer</offerKey>
+    </baseOffer>
+    <activationDate>2015-03-13T10:47:17+01:00</activationDate>
+    <channelKey>INTERNAL</channelKey>
+    <operator>admin</operator>
+</CreateCustomizedOffer>

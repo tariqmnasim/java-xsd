@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.infonova.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:include schemaLocation="include/rest-api-customers.xsd"/>
+<xs:include schemaLocation="include/rest-api-offerconfigurations.xsd"/>
+<xs:include schemaLocation="include/rest-api-serviceconfigurations.xsd"/>
+<xs:include schemaLocation="include/rest-api-usages.xsd"/>
+<xs:include schemaLocation="include/rest-api-billingmanagement.xsd"/>
+<xs:include schemaLocation="include/rest-api-templates.xsd"/>
+<xs:include schemaLocation="include/rest-api-channels.xsd"/>
+</xs:schema>

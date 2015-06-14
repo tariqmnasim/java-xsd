@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CreateCustomizedOffer xmlns="http://www.travellazy.com/product/model">
+    <priority>4</priority>
+    <bundleOffer>
+        <offerKey>Fixed_Line_And_Broadband</offerKey>
+        <baseOffers>
+            <baseOffer>
+                <offerKey>Fixed_Line_Anytime</offerKey>
+                <offerFeatures>
+                    <feature>
+                        <featureKey>Fixed_line_Allowance</featureKey>
+                    </feature>
+                </offerFeatures>
+                <serviceFeatures>
+                    <feature>
+                        <featureKey>External_Provisioning_ID</featureKey>
+                    </feature>
+                </serviceFeatures>
+                <offerGroupKey>Fixed_Line_Offers</offerGroupKey>
+            </baseOffer>
+            <baseOffer>
+                <offerKey>Broadband_Ultra</offerKey>
+                <offerGroupKey>Broadband_Ultra</offerGroupKey>
+            </baseOffer>
+        </baseOffers>
+    </bundleOffer>
+    <activationDate>2010-11-17T14:20:00+01:00</activationDate>
+    <channelKey>Demo channel</channelKey>
+    <operator>arthur.evans</operator>
+</CreateCustomizedOffer>

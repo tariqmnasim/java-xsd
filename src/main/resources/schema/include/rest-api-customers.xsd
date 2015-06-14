@@ -1,0 +1,4163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.infonova.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:annotation>
+<xs:documentation>
+This is the model used for all customer based
+information and
+manipulation operations.
+</xs:documentation>
+</xs:annotation>
+<xs:include schemaLocation="rest-api-commons.xsd"/>
+<xs:element name="address" type="Address"/>
+<xs:complexType name="Address">
+<xs:complexContent>
+<xs:extension base="AbstractAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="addressLine1" type="xs:string"/>
+<xs:element minOccurs="0" name="addressLine2" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createAddress" type="CreateAddress"/>
+<xs:complexType name="CreateAddress">
+<xs:complexContent>
+<xs:extension base="AbstractAddress"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="updateAddress" type="UpdateAddress"/>
+<xs:complexType name="UpdateAddress">
+<xs:complexContent>
+<xs:extension base="AbstractAddress"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractInvoiceDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="CreateAddress"/>
+<xs:element minOccurs="0" name="invoiceItemizationTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="taxModeKey" type="xs:string"/>
+<xs:element default="1" name="invoiceInterval" type="xs:int"/>
+<xs:element minOccurs="0" name="invoiceDeliveryMethodKey" type="xs:string"/>
+<xs:element minOccurs="0" name="nextInvoicePeriod" type="InvoicePeriod"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="TaxExemption">
+<xs:sequence>
+<xs:element minOccurs="0" name="taxExemptionReasonKey" type="xs:string"/>
+<xs:element minOccurs="0" name="taxExemptionCode" type="xs:string"/>
+<xs:element name="validFrom" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="validTo" type="xs:dateTime"/>
+</xs:sequence>
+<xs:attribute default="false" name="isTaxExempt" type="xs:boolean"/>
+</xs:complexType>
+<xs:element name="createInvoiceDetails" type="CreateInvoiceDetails"/>
+<xs:complexType name="CreateInvoiceDetails">
+<xs:complexContent>
+<xs:extension base="AbstractInvoiceDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="billCycleId" type="xs:long"/>
+<xs:element minOccurs="0" name="taxExemption" type="TaxExemption"/>
+<xs:element maxOccurs="1" minOccurs="0" name="invoiceCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+Three letter iso-code of the customers currency. Charges of different currency are
+exchanged at billrun, so that the customer receives the invoice in this currency. Cannot
+be changed.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="updateInvoiceDetails" type="UpdateInvoiceDetails"/>
+<xs:complexType name="UpdateInvoiceDetails">
+<xs:complexContent>
+<xs:extension base="AbstractInvoiceDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="futureBillCycleId" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="invoiceDetails" type="InvoiceDetails"/>
+<xs:complexType name="InvoiceDetails">
+<xs:complexContent>
+<xs:extension base="AbstractInvoiceDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="futureBillCycleId" type="xs:long"/>
+<xs:element name="currentBillCycleId" type="xs:long"/>
+<xs:element minOccurs="0" name="lastInvoicedPeriod" type="InvoicePeriod"/>
+<xs:element name="taxExemption" type="TaxExemption"/>
+<xs:element minOccurs="0" name="pendingTaxExemption" type="TaxExemption"/>
+<xs:element maxOccurs="1" minOccurs="0" name="invoiceCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+Three letter iso-code of the customers currency. Charges of different currency are
+exchanged at billrun, so that the customer receives the invoice in this currency. Cannot
+be changed.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Parameters">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="parameter" type="Parameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Parameter">
+<xs:sequence>
+<xs:element name="key" type="xs:string"/>
+<xs:element minOccurs="0" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdditionalDetails">
+<xs:annotation>
+<xs:documentation>
+A list of additional customer details.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="detail" type="AdditionalDetailsEntry"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdditionalDetailsEntry">
+<xs:annotation>
+<xs:documentation>
+Represents one additional customer detail entry.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The key (name) for the additional customer detail entry.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="value" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The value for the additional customer detail entry.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DocumentIdentifiers">
+<xs:annotation>
+<xs:documentation>
+A list of identifiers of documents to be linked to customer. Identifiers are be obtained from the
+/documents resource, after the documents are successfully uploaded to the document repository.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="documentIdentifier" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+An identifier of a document to be linked to customer. Identifiers are be obtained from the
+/documents resource, after the documents are successfully uploaded to the document repository.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="Priority">
+<xs:restriction base="xs:integer">
+<xs:minInclusive value="0"/>
+<xs:maxInclusive value="9"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType abstract="true" name="CreateOrder">
+<xs:sequence>
+<xs:element minOccurs="0" name="priority" type="Priority"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractCreateCustomer">
+<xs:complexContent>
+<xs:extension base="CreateOrder">
+<xs:sequence>
+<xs:choice>
+<xs:element name="channelId" type="xs:long"/>
+<xs:element name="channelKey" type="xs:string"/>
+</xs:choice>
+<xs:element minOccurs="0" name="operator" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="customerId" type="xs:long"/>
+<xs:element maxOccurs="1" minOccurs="0" name="parentAccountNumber" type="xs:long"/>
+<xs:element minOccurs="0" name="legacyAccountNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="contactDetails" type="CreateContactDetails"/>
+<xs:element minOccurs="0" name="invoiceDetails" type="CreateInvoiceDetails"/>
+<xs:element minOccurs="0" name="paymentDetails" type="CreatePaymentDetails"/>
+<xs:element minOccurs="0" name="creditCheckDetails" type="CreateCreditCheckDetails"/>
+<xs:element minOccurs="0" name="createUser" type="CreateUser"/>
+<xs:element maxOccurs="1" minOccurs="0" name="offerIndependentFeatures" type="CreateFeatures"/>
+<xs:element maxOccurs="1" minOccurs="0" name="customizedOffers" type="CreateCustomizedOffers"/>
+<xs:element minOccurs="0" name="notes" type="xs:string"/>
+<xs:element minOccurs="0" name="parameters" type="Parameters"/>
+<xs:element minOccurs="0" name="documentIdentifiers" type="DocumentIdentifiers"/>
+<xs:element minOccurs="0" name="additionalDetails" type="AdditionalDetails"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createResidentialCustomer" type="CreateResidentialCustomer"/>
+<xs:complexType name="CreateResidentialCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element name="residentialCustomerAttributes" type="ResidentialCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="prospectResidentialCustomer" type="ProspectResidentialCustomer"/>
+<xs:complexType name="ProspectResidentialCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="residentialCustomerAttributes" type="ResidentialCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createBusinessCustomer" type="CreateBusinessCustomer"/>
+<xs:complexType name="CreateBusinessCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element name="businessCustomerAttributes" type="BusinessCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="prospectBusinessCustomer" type="ProspectBusinessCustomer"/>
+<xs:complexType name="ProspectBusinessCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="businessCustomerAttributes" type="BusinessCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createTenant" type="CreateTenant"/>
+<xs:complexType name="CreateTenant">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element name="tenantAttributes" type="TenantAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createCustomer" type="CreateCustomer"/>
+<xs:complexType name="CreateCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="customerTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="customerAttributes" type="CustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="createProspect" type="CreateProspect"/>
+<xs:complexType name="CreateProspect">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="customerTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="customerAttributes" type="CustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="prospectResponse" type="ProspectResponse"/>
+<xs:complexType name="ProspectResponse">
+<xs:sequence>
+<xs:element name="prospectId" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractCreditCheckDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="identificationTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="identificationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="residentialStatusKey" type="xs:string"/>
+<xs:element minOccurs="0" name="residentialStatusKeyPreviousAddress" type="xs:string"/>
+<xs:element minOccurs="0" name="gender" type="GenderType"/>
+<xs:element minOccurs="0" name="countryOfResidence" type="xs:string"/>
+<xs:element minOccurs="0" name="employmentStatusKey" type="xs:string"/>
+<xs:element minOccurs="0" name="employerName" type="xs:string"/>
+<xs:element minOccurs="0" name="agreesToCreditCheck" type="xs:boolean"/>
+<xs:element minOccurs="0" name="timeAtCurrentAddressKey" type="xs:string"/>
+<xs:element minOccurs="0" name="timeAtPreviousAddressKey" type="xs:string"/>
+<xs:element minOccurs="0" name="creditCardNumbersKey" type="xs:string"/>
+<xs:element minOccurs="0" name="timeInCurrentJobKey" type="xs:string"/>
+<xs:element minOccurs="0" name="initialCreditDecisionType" type="CreditDecisionType"/>
+<xs:element minOccurs="0" name="riskGrade" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="GenderType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="FEMALE"/>
+<xs:enumeration value="MALE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CreditDecisionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ACCEPTED"/>
+<xs:enumeration value="REFERRED"/>
+<xs:enumeration value="DECLINED"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="createCreditCheckDetails" type="CreateCreditCheckDetails"/>
+<xs:complexType name="CreateCreditCheckDetails">
+<xs:complexContent>
+<xs:extension base="AbstractCreditCheckDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractCreateUser">
+<xs:sequence>
+<xs:element name="userName" type="xs:string"/>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element name="email" type="xs:string"/>
+<xs:element name="password" type="xs:string"/>
+<xs:element minOccurs="0" name="passwordExpirationDate" type="xs:dateTime"/>
+<xs:element name="role" type="xs:string"/>
+<xs:element name="languageKey" type="xs:string"/>
+<xs:element minOccurs="0" name="securityQuestion" type="xs:string"/>
+<xs:element minOccurs="0" name="securityAnswer" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="isActive" type="xs:boolean"/>
+</xs:complexType>
+<xs:element name="createUser" type="CreateUser"/>
+<xs:complexType name="CreateUser">
+<xs:complexContent>
+<xs:extension base="AbstractCreateUser"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="StatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NEW"/>
+<xs:enumeration value="ACTIVE"/>
+<xs:enumeration value="PENDING_DISCONNECT"/>
+<xs:enumeration value="DISCONNECTED"/>
+<xs:enumeration value="CLOSED"/>
+<xs:enumeration value="PENDING_ACTIVE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="customerSearchResults" type="CustomerSearchResults"/>
+<xs:complexType name="CustomerSearchResults">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="customerSearchResult" type="CustomerSearchResult"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="customerSearchResult" type="CustomerSearchResult"/>
+<xs:complexType name="CustomerSearchResult">
+<xs:sequence>
+<xs:element minOccurs="0" name="customerId" type="xs:long"/>
+<xs:element minOccurs="0" name="customerTitleKey" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element minOccurs="0" name="businessName" type="xs:string"/>
+<xs:element minOccurs="0" name="accountStatusKey" type="StatusType"/>
+<xs:element minOccurs="0" name="address" type="Address"/>
+<xs:element maxOccurs="1" minOccurs="0" name="customizedOffers" type="CustomizedOfferSearchResults"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustomizedOfferSearchResults">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="customizedOffer" type="CustomizedOfferSearchResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustomizedOfferSearchResult">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="key" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="address" type="Address"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="searchResults" type="SearchResults"/>
+<xs:complexType name="SearchResults">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="searchResult" type="SearchResult"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SearchResult">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="field" type="Field"/>
+</xs:sequence>
+<xs:attribute name="score" type="xs:float"/>
+</xs:complexType>
+<xs:complexType name="Field">
+<xs:sequence>
+<xs:element name="key" type="xs:string"/>
+<xs:element maxOccurs="unbounded" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="customizedOffer" type="AbstractCustomizedOffer"/>
+<xs:complexType abstract="true" name="AbstractCustomizedOffer">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="offerKey" type="xs:string"/>
+<xs:element name="internalName" type="xs:string"/>
+<xs:element name="invoiceName" type="xs:string"/>
+<xs:element name="offerTypeKey" type="xs:string"/>
+<xs:element name="offerStatusKey" type="xs:string"/>
+<xs:element minOccurs="0" name="activation" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="termination" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustomizedBaseOffers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="CustomizedBaseOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="customizedBaseOffer" type="CustomizedBaseOffer"/>
+<xs:complexType name="CustomizedBaseOffer">
+<xs:complexContent>
+<xs:extension base="AbstractCustomizedOffer">
+<xs:sequence>
+<xs:element minOccurs="0" name="parentOfferId" type="xs:long"/>
+<xs:element minOccurs="0" name="serviceAccountId" type="xs:long"/>
+<xs:element minOccurs="0" name="serviceIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceStatusKey" type="StatusType"/>
+<xs:element minOccurs="0" name="serviceBarLevel" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="customizedBundleOffer" type="CustomizedBundleOffer"/>
+<xs:complexType name="CustomizedBundleOffer">
+<xs:complexContent>
+<xs:extension base="AbstractCustomizedOffer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="customizedBaseOffers" type="CustomizedBaseOffers"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="customizedOffers" type="CustomizedOffers"/>
+<xs:complexType name="CustomizedOffers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="customizedOffer" type="AbstractCustomizedOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CreateCustomizedOfferType">
+<xs:complexContent>
+<xs:extension base="CreateOrder">
+<xs:sequence>
+<xs:choice maxOccurs="unbounded" minOccurs="1">
+<xs:element name="offerConfiguration" type="RetrieveOfferConfiguration"/>
+<xs:element name="baseOffer" type="CreateCustomizedBaseOffer"/>
+<xs:element name="bundleOffer" type="CreateCustomizedBundleOffer"/>
+</xs:choice>
+<xs:element minOccurs="0" name="activationDate" type="xs:dateTime"/>
+<xs:choice minOccurs="1">
+<xs:element name="channelId" type="xs:long"/>
+<xs:element name="channelKey" type="xs:string"/>
+</xs:choice>
+<xs:element minOccurs="0" name="operator" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="CreateCustomizedOffer" type="CreateCustomizedOfferType"/>
+<xs:element name="createCustomizedOffers" type="CreateCustomizedOffers"/>
+<xs:complexType name="CreateCustomizedOffers">
+<xs:choice maxOccurs="unbounded" minOccurs="1">
+<xs:element name="customizedOffer" type="AbstractCreateCustomizedOffer"/>
+<xs:element name="offerConfiguration" type="RetrieveOfferConfiguration"/>
+<xs:element name="baseOffer" type="CreateCustomizedBaseOffer"/>
+<xs:element name="bundleOffer" type="CreateCustomizedBundleOffer"/>
+</xs:choice>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractCreateCustomizedOffer">
+<xs:sequence>
+<xs:element name="offerKey" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="offerFeatures" type="CreateFeatures"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="RetrieveOfferConfiguration">
+<xs:complexContent>
+<xs:restriction base="CreateCustomizedBaseOffer">
+<xs:sequence>
+<xs:element name="offerKey" type="xs:string"/>
+</xs:sequence>
+</xs:restriction>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateCustomizedBaseOffers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="baseOffer" type="CreateCustomizedBaseOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CreateCustomizedBaseOffer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomizedOffer">
+<xs:sequence>
+<xs:choice minOccurs="0">
+<xs:element name="services" type="CreateServices"/>
+<xs:element name="serviceFeatures" type="CreateFeatures"/>
+</xs:choice>
+<xs:element maxOccurs="1" minOccurs="0" name="offerGroupKey" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateCustomizedBundleOffer">
+<xs:complexContent>
+<xs:extension base="AbstractCreateCustomizedOffer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="baseOffers" type="CreateCustomizedBaseOffers"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpgradeBehavior">
+<xs:all>
+<xs:element name="isUpgrade" type="xs:boolean"/>
+<xs:element minOccurs="0" name="earlyTerminationFeeHandlingTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="earlyTerminationFeeHandlingAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="upDowngradeFeeFeatureKey" type="xs:string"/>
+</xs:all>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractChangeCustomizedOffer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="offerFeatures" type="AbstractFeatures"/>
+</xs:sequence>
+</xs:complexType>
+<xs:group name="upgradeInformation">
+<xs:sequence>
+<xs:element minOccurs="1" name="targetOfferKey" type="xs:string"/>
+<xs:choice minOccurs="1">
+<xs:element name="upDowngradeRuleKey" type="xs:string"/>
+<xs:element name="upgradeBehavior" type="UpgradeBehavior"/>
+</xs:choice>
+<xs:element maxOccurs="1" minOccurs="0" name="downgradeReasonKey" type="xs:string"/>
+</xs:sequence>
+</xs:group>
+<xs:complexType name="ChangeCustomizedBaseOffer">
+<xs:complexContent>
+<xs:extension base="AbstractChangeCustomizedOffer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceFeatures" type="AbstractFeatures"/>
+<xs:element maxOccurs="1" minOccurs="0" name="services" type="AbstractServices"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:group name="BundleMemberActions">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="upgradeBaseOffers" type="UpgradeCustomizedBundleMembers"/>
+<xs:element maxOccurs="1" minOccurs="0" name="createBaseOffers" type="CreateCustomizedBundleMembers"/>
+<xs:element maxOccurs="1" minOccurs="0" name="deleteBaseOffers" type="DeleteCustomizedBundleMembers"/>
+</xs:sequence>
+</xs:group>
+<xs:complexType name="ChangeCustomizedBundleOffer">
+<xs:annotation>
+<xs:documentation>
+Used for upgrade bundle offers.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractChangeCustomizedOffer">
+<xs:sequence>
+<xs:group ref="BundleMemberActions"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpgradeCustomizedBundleMembers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="baseOffer" type="UpgradeCustomizedBundleMember"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CreateCustomizedBundleMembers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="baseOffer" type="CreateCustomizedBaseOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteCustomizedBundleMembers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="baseOffer" type="DeleteBundleMember"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="UpgradeCustomizedBundleMember">
+<xs:sequence>
+<xs:element name="targetOfferKey" type="xs:string"/>
+<xs:choice minOccurs="1">
+<xs:element name="sourceOfferKey" type="xs:string"/>
+<xs:element name="sourceOfferId" type="xs:long"/>
+</xs:choice>
+<xs:element minOccurs="0" name="offerGroupKey" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="offerFeatures" type="AbstractFeatures"/>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceFeatures" type="AbstractFeatures"/>
+<xs:element maxOccurs="1" minOccurs="0" name="services" type="AbstractServices"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="DeleteBundleMember">
+<xs:sequence>
+<xs:choice minOccurs="1">
+<xs:element name="offerKey" type="xs:string"/>
+<xs:element name="offerId" type="xs:long"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Features">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="feature" type="Feature"/>
+<xs:element minOccurs="0" name="services" type="FeatureServices"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="features" type="Features"/>
+<xs:complexType name="FeatureServices">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="service" type="FeatureService"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FeatureService">
+<xs:sequence>
+<xs:element name="serviceKey" type="xs:string"/>
+<xs:element name="serviceId" type="nonNegativeLong"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="feature" type="Feature"/>
+<xs:element minOccurs="0" name="services" type="FeatureServices"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Feature">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="key" type="xs:string"/>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="type" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceKey" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceId" type="nonNegativeLong"/>
+<xs:element minOccurs="0" name="validFrom" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="validTo" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="invoiceText" type="xs:string"/>
+<xs:element minOccurs="0" name="netCharge" type="xs:decimal"/>
+<xs:element minOccurs="0" name="grossCharge" type="xs:decimal"/>
+<xs:element minOccurs="0" name="chargeCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of this feature's currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="chargeTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="value" type="AbstractFeatureValue"/>
+</xs:sequence>
+<xs:attribute name="hasFeatures" type="xs:boolean"/>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractFeatureValue"/>
+<xs:complexType name="FeatureValueAddress">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="address" type="Address"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueList">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="list">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueString">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValuePhoneNumber">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueSelect">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueBoolean">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueDate">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:dateTime"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueNumber">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue">
+<xs:sequence>
+<xs:element name="value" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureValueNone">
+<xs:complexContent>
+<xs:extension base="AbstractFeatureValue"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="updateFeatures" type="UpdateFeatures"/>
+<xs:complexType name="UpdateFeatures">
+<xs:complexContent>
+<xs:extension base="CreateOrder">
+<xs:sequence>
+<xs:choice maxOccurs="1" minOccurs="0">
+<xs:element name="channelId" type="xs:long"/>
+<xs:element name="channelKey" type="xs:string"/>
+</xs:choice>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="feature" type="AbstractFeature"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UsageAdjustments">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="usage" type="UsageAdjustment"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="UsageAdjustment">
+<xs:sequence>
+<xs:element name="chargeClusterKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The chargeClusterKey to identify the usages, that should use the adjusted chargePerUnit.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="billTypeKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The billTypeKey to identify the usages, that should use the adjusted chargePerUnit.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="adjustedChargePerUnit" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The amount to use to rate the usages instead of the configured one. Only for usage charges having the rating function marked as isInstanceOverridable.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AbstractServices">
+<xs:choice maxOccurs="unbounded" minOccurs="1">
+<xs:element name="createService" type="CreateService"/>
+<xs:element name="updateService" type="UpdateService"/>
+<xs:element name="deleteService" type="DeleteService"/>
+<xs:element name="service" type="AbstractService"/>
+</xs:choice>
+</xs:complexType>
+<xs:complexType name="CreateServices">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="service" type="CreateService"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractService"/>
+<xs:complexType name="CreateService">
+<xs:complexContent>
+<xs:extension base="AbstractService">
+<xs:sequence>
+<xs:element name="serviceKey" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceFeatures" type="CreateFeatures"/>
+<xs:element minOccurs="0" name="subServices" type="CreateServices"/>
+<xs:element minOccurs="0" name="serviceUsages" type="UsageAdjustments"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpdateService">
+<xs:complexContent>
+<xs:extension base="AbstractService">
+<xs:sequence>
+<xs:choice minOccurs="1">
+<xs:element name="serviceKey" type="xs:string"/>
+<xs:element name="serviceId" type="nonNegativeLong"/>
+</xs:choice>
+<xs:element minOccurs="0" name="serviceFeatures" type="AbstractFeatures"/>
+<xs:element minOccurs="0" name="subServices" type="AbstractServices"/>
+<xs:element minOccurs="0" name="serviceUsages" type="UsageAdjustments"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="DeleteService">
+<xs:complexContent>
+<xs:extension base="AbstractService">
+<xs:sequence>
+<xs:choice minOccurs="1">
+<xs:element name="serviceKey" type="xs:string"/>
+<xs:element name="serviceId" type="nonNegativeLong"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateFeatures">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="feature" type="CreateFeature"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AbstractFeatures">
+<xs:choice maxOccurs="unbounded" minOccurs="1">
+<xs:element name="createFeature" type="CreateFeature"/>
+<xs:element name="updateFeature" type="UpdateFeature"/>
+<xs:element name="deleteFeature" type="DeleteFeature"/>
+<xs:element name="feature" type="AbstractFeature"/>
+</xs:choice>
+</xs:complexType>
+<xs:complexType abstract="true" name="Selectable">
+<xs:attribute default="true" name="isSelected" type="xs:boolean"/>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractFeature">
+<xs:complexContent>
+<xs:extension base="Selectable">
+<xs:sequence>
+<xs:choice minOccurs="1">
+<xs:element name="id" type="xs:long"/>
+<xs:element name="featureKey" type="xs:string"/>
+</xs:choice>
+<xs:element minOccurs="0" name="serviceFeatures" type="AbstractFeatures"/>
+<xs:element minOccurs="0" name="adjustedNetCharge" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The amount to use for this charge instead of the configured one. Only for once-only and recurring charges that are marked as isInstanceOverridable.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateFeature">
+<xs:complexContent>
+<xs:extension base="AbstractFeature">
+<xs:sequence>
+<xs:element minOccurs="0" name="adjustedAllowanceAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The allowance amount to use for this allowance instead of the configured one. Only for allowances and limits that are marked as isAmountOverridable.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="value" type="AbstractFeatureValue"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpdateFeature">
+<xs:complexContent>
+<xs:extension base="AbstractFeature">
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="AbstractFeatureValue"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="DeleteFeature">
+<xs:complexContent>
+<xs:extension base="AbstractFeature"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="unbilledUsages" type="UnbilledUsages"/>
+<xs:complexType name="UnbilledUsages">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="unbilledUsage" type="UnbilledUsage"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UnbilledUsage">
+<xs:sequence>
+<xs:element name="customizedOfferId" type="xs:long"/>
+<xs:element name="offerKey" type="xs:string"/>
+<xs:element name="offerInvoiceText" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="serviceIdentifier" type="xs:string"/>
+<xs:element name="netAmount" type="xs:decimal"/>
+<xs:element name="grossAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency for this usage's amount.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="units" type="xs:decimal"/>
+<xs:element name="measuringUnitKey" type="xs:string"/>
+<xs:element name="usageSumsPerBillType">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="usageSumPerBillType" type="Usage"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Usage">
+<xs:sequence>
+<xs:element name="billTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="invoiceText" type="xs:string"/>
+<xs:element name="netAmount" type="xs:decimal"/>
+<xs:element name="grossAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency for this usage's amount.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="units" type="xs:decimal"/>
+<xs:element minOccurs="0" name="measuringUnitKey" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="customizedOfferUnbilledUsages" type="CustomizedOfferUnbilledUsages"/>
+<xs:complexType name="CustomizedOfferUnbilledUsages">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="customizedOfferUnbilledUsage" type="CustomizedOfferUnbilledUsage"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CustomizedOfferUnbilledUsage">
+<xs:sequence>
+<xs:element name="billTypeKey" type="xs:string"/>
+<xs:element name="serviceAccountId" type="xs:long"/>
+<xs:element name="serviceIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="invoiceText" type="xs:string"/>
+<xs:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="duration" type="xs:decimal"/>
+<xs:element minOccurs="0" name="units" type="xs:decimal"/>
+<xs:element minOccurs="0" name="measuringUnitKey" type="xs:string"/>
+<xs:element name="netAmount" type="xs:decimal"/>
+<xs:element name="grossAmount" type="xs:decimal"/>
+<xs:element name="currency" type="isoCurrency"/>
+<xs:element minOccurs="0" name="taxTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="originationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationCountryCode" type="xs:string"/>
+<xs:element minOccurs="0" name="sessionInfo" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="allowances" type="Allowances"/>
+<xs:complexType name="Allowances">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="allowance" type="Allowance"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Allowance">
+<xs:sequence>
+<xs:element name="allowanceKey" type="xs:string"/>
+<xs:element minOccurs="0" name="customizedOfferId" type="xs:long"/>
+<xs:element minOccurs="0" name="offerKey" type="xs:string"/>
+<xs:element minOccurs="0" name="offerInvoiceText" type="xs:string"/>
+<xs:element name="billTypeKey" type="xs:string"/>
+<xs:element name="billTypeInvoiceText" type="xs:string"/>
+<xs:element name="billTypeGroupKey" type="xs:string"/>
+<xs:element minOccurs="0" name="serviceIdentifier" type="xs:string"/>
+<xs:element name="amount" type="xs:decimal"/>
+<xs:element name="usedAmount" type="xs:decimal"/>
+<xs:element name="remainingAmount" type="xs:decimal"/>
+<xs:element name="measuringUnitKey" type="xs:string"/>
+<xs:element minOccurs="0" name="expiringAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+Amount that will expire in this billing period.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="carryOverAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+Amount that will be carried over to the next billing period.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="carriedOverFromLastBillingPeriod" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+Amount that will be carried over to the next billing period.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="isLimit" type="xs:boolean"/>
+<xs:attribute name="type" type="AllowanceType" use="optional">
+<xs:annotation>
+<xs:documentation>
+Type of allowance: RECURRING, ONCE_ONLY, RECURRING_CARRY_OVER.
+</xs:documentation>
+</xs:annotation>
+</xs:attribute>
+</xs:complexType>
+<xs:simpleType name="AllowanceType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="RECURRING"/>
+<xs:enumeration value="ONCE_ONLY"/>
+<xs:enumeration value="RECURRING_CARRY_OVER"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="subaccounts" type="SubAccounts"/>
+<xs:complexType name="SubAccounts">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="subaccount" type="SubAccount"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SubAccount">
+<xs:sequence>
+<xs:element name="customerId" type="xs:long"/>
+<xs:element name="customerTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="businessName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<!-- Residential customers for GET & PUT -->
+<xs:complexType name="ResidentialCustomerAttributes">
+<xs:sequence>
+<xs:element minOccurs="0" name="customerTitleKey" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="preferredName" type="xs:string"/>
+<xs:element minOccurs="0" name="dayOfBirth" type="xs:date"/>
+<xs:element minOccurs="0" name="parameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<!-- Business customers for GET & PUT -->
+<xs:complexType name="BusinessCustomerAttributes">
+<xs:sequence>
+<xs:element name="entityTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="contactCustomerTitleKey" type="xs:string"/>
+<xs:element minOccurs="0" name="contactFirstName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactMiddleName" type="xs:string"/>
+<xs:element name="contactLastName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactPreferredName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactDayOfBirth" type="xs:date"/>
+<xs:element minOccurs="0" name="businessName" type="xs:string"/>
+<xs:element minOccurs="0" name="legalName" type="xs:string"/>
+<xs:element minOccurs="0" name="commercialRegistrationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="industryTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="parameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<!-- Tenant customers for GET & PUT -->
+<xs:complexType name="TenantAttributes">
+<xs:sequence>
+<xs:element name="tenantName" type="xs:string"/>
+<xs:element name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="operatorName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactCustomerTitleKey" type="xs:string"/>
+<xs:element minOccurs="0" name="contactFirstName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactMiddleName" type="xs:string"/>
+<xs:element name="contactLastName" type="xs:string"/>
+<xs:element minOccurs="0" name="contactPreferredName" type="xs:string"/>
+<xs:element minOccurs="0" name="referenceNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="parameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<!-- Customers attributes for GET & PUT -->
+<xs:complexType name="CustomerAttributes">
+<xs:sequence>
+<xs:element minOccurs="0" name="customerTitleKey" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="preferredName" type="xs:string"/>
+<xs:element minOccurs="0" name="dayOfBirth" type="xs:date"/>
+<xs:element minOccurs="0" name="entityTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="businessName" type="xs:string"/>
+<xs:element minOccurs="0" name="legalName" type="xs:string"/>
+<xs:element minOccurs="0" name="commercialRegistrationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="industryTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="parameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<!-- Abstract Customer for doing GET operations -->
+<xs:complexType abstract="true" name="AbstractCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="statusKey" type="StatusType"/>
+<xs:element minOccurs="0" name="activationDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="lastModified" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="parentCustomerId" type="xs:long"/>
+<xs:element minOccurs="0" name="legacyAccountNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="overdueBalance" type="xs:string"/>
+<xs:element minOccurs="0" name="accountBalance" type="xs:string"/>
+<xs:element minOccurs="0" name="accountBalanceCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The account balance's currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="additionalDetails" type="AdditionalDetails"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="customer" type="Customer"/>
+<xs:complexType name="Customer">
+<xs:complexContent>
+<xs:extension base="AbstractCustomer">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="customerTypeKey" type="xs:string"/>
+<xs:element name="customerAttributes" type="CustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="residentialCustomer" type="ResidentialCustomer"/>
+<xs:complexType name="ResidentialCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCustomer">
+<xs:sequence>
+<xs:element name="residentialCustomerAttributes" type="ResidentialCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="businessCustomer" type="BusinessCustomer"/>
+<xs:complexType name="BusinessCustomer">
+<xs:complexContent>
+<xs:extension base="AbstractCustomer">
+<xs:sequence>
+<xs:element name="businessCustomerAttributes" type="BusinessCustomerAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="tenant" type="Tenant"/>
+<xs:complexType name="Tenant">
+<xs:complexContent>
+<xs:extension base="AbstractCustomer">
+<xs:sequence>
+<xs:element name="tenantAttributes" type="TenantAttributes"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="updateCustomer" type="UpdateCustomer"/>
+<xs:complexType name="UpdateCustomer">
+<xs:sequence>
+<xs:choice>
+<xs:element name="businessCustomerAttributes" type="BusinessCustomerAttributes"/>
+<xs:element name="residentialCustomerAttributes" type="ResidentialCustomerAttributes"/>
+<xs:element name="customerAttributes" type="CustomerAttributes"/>
+</xs:choice>
+<xs:element minOccurs="0" name="additionalDetails" type="AdditionalDetails"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Orders">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="order" type="Order"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="orders" type="Orders"/>
+<xs:element name="order" type="Order"/>
+<xs:complexType name="Order">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="partition" type="xs:string"/>
+<xs:element name="customerId" type="xs:long"/>
+<xs:element minOccurs="0" name="priority" type="xs:int"/>
+<xs:element name="orderTypeKey" type="xs:string"/>
+<xs:element name="creationDate" type="xs:dateTime"/>
+<xs:element name="orderStatusKey" type="xs:string"/>
+<xs:element minOccurs="0" name="parentId" type="xs:long"/>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="subOrders">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="subOrder" type="Order"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="orderHistoryEntries" type="OrderHistoryEntries"/>
+<xs:complexType name="OrderHistoryEntries">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="orderHistoryEntry" type="OrderHistoryEntry"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OrderHistoryEntry">
+<xs:sequence>
+<xs:element name="orderId" type="xs:long"/>
+<xs:element name="partition" type="xs:string"/>
+<xs:element name="creationDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="category" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="paymentDetails" type="PaymentDetails"/>
+<xs:complexType name="PaymentDetails">
+<xs:sequence>
+<xs:element name="currentPaymentDetails" type="PaymentDetailsInformation"/>
+<xs:element maxOccurs="1" minOccurs="0" name="pendingPaymentDetails" type="PendingPaymentDetailsInformation"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractPaymentDetails">
+<xs:sequence>
+<xs:element name="paymentMethodKey" type="xs:string"/>
+<xs:element name="paymentTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="activationDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="paymentParameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="createPaymentDetails" type="CreatePaymentDetails"/>
+<xs:complexType name="CreatePaymentDetails">
+<xs:complexContent>
+<xs:extension base="AbstractPaymentDetails">
+<xs:sequence>
+<xs:choice minOccurs="0">
+<xs:element name="creditCardDetails" type="CreateCreditCardDetails"/>
+<xs:element name="bankDetails" type="CreateBankDetails"/>
+<xs:element name="bankDetailsIban" type="CreateBankDetailsIban"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="updatePaymentDetails" type="UpdatePaymentDetails"/>
+<xs:complexType name="UpdatePaymentDetails">
+<xs:complexContent>
+<xs:extension base="AbstractPaymentDetails">
+<xs:sequence>
+<xs:choice minOccurs="0">
+<xs:element name="creditCardDetails" type="UpdateCreditCardDetails"/>
+<xs:element name="bankDetails" type="UpdateBankDetails"/>
+<xs:element name="bankDetailsIban" type="UpdateBankDetailsIban"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="PendingPaymentDetailsInformation">
+<xs:complexContent>
+<xs:extension base="PaymentDetailsInformation">
+<xs:sequence>
+<xs:element minOccurs="0" name="activationDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="PaymentDetailsInformation">
+<xs:sequence>
+<xs:element name="paymentMethodKey" type="xs:string"/>
+<xs:element name="paymentTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="paymentParameters" type="Parameters"/>
+<xs:choice minOccurs="0">
+<xs:element name="creditCardDetails" type="CreditCardDetails"/>
+<xs:element name="bankDetails" type="BankDetails"/>
+<xs:element name="bankDetailsIban" type="BankDetailsIban"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AbstractCreditCardDetails">
+<xs:sequence>
+<xs:element name="cardHoldersName" type="xs:string"/>
+<xs:element name="cardTypeKey" type="xs:string"/>
+<xs:element name="expireMonth">
+<xs:simpleType>
+<xs:restriction base="xs:int">
+<xs:minInclusive value="1"/>
+<xs:maxInclusive value="12"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="expireYear">
+<xs:simpleType>
+<xs:restriction base="xs:int">
+<xs:minInclusive value="1900"/>
+<xs:maxInclusive value="4000"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CreditCardDetails">
+<xs:complexContent>
+<xs:extension base="AbstractCreditCardDetails">
+<xs:sequence>
+<xs:element name="cardLastFourDigits" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateCreditCardDetails">
+<xs:complexContent>
+<xs:extension base="AbstractCreditCardDetails">
+<xs:sequence>
+<xs:element name="cardNumber">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="13"/>
+<xs:maxLength value="16"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="securityCode">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="3"/>
+<xs:maxLength value="4"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpdateCreditCardDetails">
+<xs:complexContent>
+<xs:extension base="CreateCreditCardDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractBankDetails">
+<xs:sequence>
+<xs:element name="accountHolderName" type="xs:string"/>
+<xs:element name="bankIdentificationCode" type="xs:string"/>
+<xs:element name="bankAccountNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BankDetails">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateBankDetails">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpdateBankDetails">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractBankDetailsIban">
+<xs:sequence>
+<xs:element name="accountHolderName" type="xs:string"/>
+<xs:element name="bankIdentificationCode" type="xs:string"/>
+<xs:element name="iban" type="xs:string"/>
+<xs:element minOccurs="0" name="signatureDate" type="xs:date"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BankDetailsIban">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetailsIban">
+<xs:sequence>
+<xs:element minOccurs="0" name="uniqueMandateReference" type="xs:string"/>
+<xs:element minOccurs="0" name="sepaStatus" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateBankDetailsIban">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetailsIban"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="UpdateBankDetailsIban">
+<xs:complexContent>
+<xs:extension base="AbstractBankDetailsIban"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractPayment">
+<xs:sequence>
+<xs:element name="amount">
+<xs:simpleType>
+<xs:restriction base="xs:decimal">
+<xs:fractionDigits value="2"/>
+<xs:minInclusive value="0.01"/>
+<xs:maxInclusive value="99999999.99"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="currency" type="isoCurrency"/>
+<xs:element minOccurs="0" name="paymentParameters" type="Parameters"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="creditCardPayment" type="CreditCardPayment"/>
+<xs:complexType name="CreditCardPayment">
+<xs:complexContent>
+<xs:extension base="AbstractPayment">
+<xs:sequence>
+<xs:element name="creditCard" type="CreateCreditCardDetails"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="invoices" type="InvoiceList"/>
+<xs:complexType name="InvoiceList">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="invoice" type="Invoice"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="invoice" type="Invoice"/>
+<xs:complexType name="Invoice">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="billCycleId" type="xs:long"/>
+<xs:element name="invoicePeriod" type="InvoicePeriod"/>
+<xs:element name="invoicePeriodStartDate" type="xs:dateTime"/>
+<xs:element name="invoicePeriodEndDate" type="xs:dateTime"/>
+<xs:element name="invoiceDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="dueDate" type="xs:dateTime"/>
+<xs:element name="amountToPay" type="xs:decimal"/>
+<xs:element name="amountOverdue" type="xs:decimal"/>
+<xs:element minOccurs="0" name="amountOverdueDate" type="xs:dateTime"/>
+<xs:element name="grossAmountDue" type="xs:decimal"/>
+<xs:element name="netAmountDue" type="xs:decimal"/>
+<xs:element name="taxAmountDue" type="xs:decimal"/>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of this invoice's amounts.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="invoiceStatusKey" type="xs:string"/>
+<xs:element minOccurs="0" name="invoiceMessages">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="invoiceMessage" type="InvoiceMessage"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="invoiceAttributes" type="InvoiceAttributes"/>
+<xs:element minOccurs="0" name="amountOpen" type="xs:decimal"/>
+</xs:sequence>
+<xs:attribute name="isFinal" type="xs:boolean"/>
+</xs:complexType>
+<xs:complexType name="InvoiceAttributes">
+<xs:sequence>
+<xs:element name="invoiceItemizeLevelKey" type="xs:string"/>
+<xs:element minOccurs="0" name="paperInvoice" type="xs:boolean"/>
+<xs:element minOccurs="0" name="taxModeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="paymentMethod" type="xs:string"/>
+<xs:element minOccurs="0" name="hasDisputes" type="xs:boolean"/>
+<xs:element minOccurs="0" name="hasAdjustments" type="xs:boolean"/>
+<xs:element minOccurs="0" name="invoiceAddress" type="Address"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="InvoiceMessage">
+<xs:sequence>
+<xs:element minOccurs="0" name="messageText" type="xs:string"/>
+<xs:element minOccurs="0" name="createDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="processingDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="InvoicePeriod">
+<xs:sequence>
+<xs:element name="month">
+<xs:simpleType>
+<xs:restriction base="xs:int">
+<xs:minInclusive value="1"/>
+<xs:maxInclusive value="12"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="year">
+<xs:simpleType>
+<xs:restriction base="xs:int">
+<xs:minInclusive value="1900"/>
+<xs:maxInclusive value="4000"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractEnquiry">
+<xs:sequence>
+<xs:element name="dueDate" type="xs:dateTime"/>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="priorityKey" type="xs:string"/>
+<xs:element name="categoryKey" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="createEnquiry" type="CreateEnquiry"/>
+<xs:complexType name="CreateEnquiry">
+<xs:complexContent>
+<xs:extension base="AbstractEnquiry"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="enquiry" type="Enquiry"/>
+<xs:complexType name="Enquiry">
+<xs:complexContent>
+<xs:extension base="AbstractEnquiry">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="creatorOperator" type="xs:string"/>
+<xs:element minOccurs="0" name="assignedOperator" type="xs:string"/>
+<xs:element name="creationDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="closeDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="typeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="resolutionDescription" type="xs:string"/>
+<xs:element minOccurs="0" name="resolutionTypeKey" type="xs:string"/>
+<xs:element name="statusKey" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Enquiries">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="enquiry" type="Enquiry"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="enquiries" type="Enquiries"/>
+<xs:complexType abstract="true" name="AbstractContactDetails">
+<xs:sequence>
+<xs:element minOccurs="0" name="email" type="xs:string"/>
+<xs:element minOccurs="0" name="phoneNumberDay" type="xs:string"/>
+<xs:element minOccurs="0" name="phoneNumberEvening" type="xs:string"/>
+<xs:element minOccurs="0" name="mobile" type="xs:string"/>
+<xs:element minOccurs="0" name="fax" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="preferredContactMethodKey" type="xs:string"/>
+<xs:element minOccurs="0" name="preferredContactLanguageKey" type="xs:string"/>
+<xs:element minOccurs="0" name="additionalDetails" type="AdditionalDetails"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="contactDetails" type="ContactDetails"/>
+<xs:complexType name="ContactDetails">
+<xs:complexContent>
+<xs:extension base="AbstractContactDetails"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CreateContactDetails">
+<xs:complexContent>
+<xs:extension base="AbstractContactDetails">
+<xs:sequence>
+<xs:element name="address" type="CreateAddress"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="availableOffers" type="AvailableOffers"/>
+<xs:complexType name="AvailableOffers">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="availableOffer" type="AvailableOffer"/>
+<xs:element maxOccurs="1" minOccurs="0" name="offerDisplayCategories">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="offerDisplayCategory" type="OfferDisplayCategory"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AvailableOffer">
+<xs:sequence>
+<xs:element name="offerKey" type="xs:string"/>
+<xs:element name="invoiceName" type="xs:string"/>
+<xs:element name="internalName" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="customizedOfferId" type="xs:int"/>
+<xs:element minOccurs="0" name="upgradeCharge" type="xs:decimal"/>
+<xs:element minOccurs="0" name="upgradeChargeCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The available offer's charge currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="offerDisplayCategoryReferences" type="OfferDisplayCategoryReferenceList"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="availableUpDowngrades" type="AvailableUpDowngrades"/>
+<xs:complexType name="AvailableUpDowngrades">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="availableUpDowngrade" type="AvailableUpDowngrade"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AvailableUpDowngrade">
+<xs:sequence>
+<xs:element name="ruleKey" type="xs:string"/>
+<xs:element name="earlyTerminationFeeHandlingTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="earlyTerminationFeeHandlingAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="upDowngradeFee" type="UpDowngradeFee"/>
+<xs:element name="offer" type="AvailableOffer"/>
+</xs:sequence>
+<xs:attribute name="isUpgrade" type="xs:boolean" use="required"/>
+</xs:complexType>
+<xs:complexType name="UpDowngradeFee">
+<xs:sequence>
+<xs:element name="upDowngradeFeeFeatureKey" type="xs:string"/>
+<xs:element name="invoiceText" type="xs:string"/>
+<xs:element name="grossCharge" type="xs:decimal"/>
+<xs:element name="netCharge" type="xs:decimal"/>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The fee's currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="updateCustomizedOffer" type="UpdateCustomizedOffer"/>
+<xs:complexType name="UpdateCustomizedOffer">
+<xs:complexContent>
+<xs:extension base="CreateOrder">
+<xs:sequence>
+<xs:element name="action" type="OfferAction"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OfferAction">
+<xs:sequence>
+<xs:element minOccurs="0" name="effectiveDate" type="dateWithOptionalTime"/>
+<xs:element minOccurs="0" name="operator" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OfferBarAction">
+<xs:complexContent>
+<xs:extension base="OfferAction">
+<xs:sequence>
+<xs:element name="barLevel" type="xs:int"/>
+<xs:element name="reason" type="xs:string"/>
+</xs:sequence>
+<xs:attribute default="false" name="isCollections" type="xs:boolean"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OfferTransferAction">
+<xs:complexContent>
+<xs:extension base="OfferAction">
+<xs:sequence>
+<xs:element name="targetCustomerId" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="OfferChangeAction">
+<xs:complexContent>
+<xs:extension base="OfferAction"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OfferUpgradeAction">
+<xs:complexContent>
+<xs:extension base="OfferChangeAction">
+<xs:sequence>
+<xs:group ref="upgradeInformation"/>
+<xs:choice maxOccurs="1" minOccurs="0">
+<xs:element name="baseOffer" type="ChangeCustomizedBaseOffer"/>
+<xs:element name="bundleOffer" type="ChangeCustomizedBundleOffer"/>
+</xs:choice>
+<xs:choice>
+<xs:element name="channelId" type="xs:long"/>
+<xs:element name="channelKey" type="xs:string"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OfferModifyAction">
+<xs:complexContent>
+<xs:extension base="OfferChangeAction">
+<xs:sequence>
+<xs:choice maxOccurs="1" minOccurs="0">
+<xs:element name="baseOffer" type="ChangeCustomizedBaseOffer"/>
+<xs:element name="bundleOffer" type="ChangeCustomizedBundleOffer"/>
+</xs:choice>
+<xs:choice maxOccurs="1" minOccurs="0">
+<xs:element name="channelId" type="xs:long"/>
+<xs:element name="channelKey" type="xs:string"/>
+</xs:choice>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="offerProposals" type="OfferProposals"/>
+<xs:complexType name="OfferProposals">
+<xs:annotation>
+<xs:documentation>
+Contains a list of proposals for requested offers.
+OfferProposals can either be a base or
+bundle offer. Bundle
+offer
+include information about selected and available base offers and
+offer features.
+This includes
+selected and available
+service and offer
+features including parameters, modification
+information
+and charges.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="offerProposal" type="AbstractOfferProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="abstractOfferProposal" type="AbstractOfferProposal"/>
+<xs:complexType abstract="true" name="AbstractOfferProposal">
+<xs:annotation>
+<xs:documentation>
+An OfferProposals can either be a base or bundle
+offer.
+Bundle offer includes information
+about selected and
+available
+base offers and bundle offer features.
+This includes selected and
+available
+service and offer
+features
+including
+parameters,
+modification information and charges.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="offerKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The unique key of the offer used to identify it.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="internalName" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="invoiceName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The translated invoice text as defined in the
+product configuration.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="customizedOfferId" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The id of the changed / updated product. Not
+filled for new offers.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationErrors" type="ValidationErrors">
+<xs:annotation>
+<xs:documentation>
+A list of error messages pertaining to this proposal.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="modification" type="ProductCatalogOfferModification"/>
+<xs:element minOccurs="0" name="featureGroups" type="FeatureGroupProposals">
+<xs:annotation>
+<xs:documentation>
+The possible and selected offer feature groups of this single offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureGroupCategories" type="FeatureGroupCategories">
+<xs:annotation>
+<xs:documentation>
+The possible feature group categories of this single offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProductCatalogOfferModification">
+<xs:annotation>
+<xs:documentation>
+Information about the existing offer this proposal has been created from as well as additional
+properties controlling the behaviour of upgrades from this existing offer to the offer defined in the
+proposal.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="sourceCustomizedOfferId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The id of the changed / updated product. Not
+filled for new offers.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="type" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+Type of the offer modification:
+<dl>
+<dt>NEW</dt>
+<dd>offer is to be newly created</dd>
+<dt>CHANGE</dt>
+<dd>offer is to be upgraded from an existing offer</dd>
+<dt>MODIFY</dt>
+<dd>existing offer is modified</dd>
+<dt>DELETE</dt>
+<dd>existing offer is deleted</dd>
+<dt>IGNORE</dt>
+<dd>offer is ignored for display purposes</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="sourceOfferKey" type="xs:string"/>
+<xs:element minOccurs="0" name="sourceOfferInvoiceName" type="xs:string"/>
+<xs:element minOccurs="0" name="sourceParentOfferId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The bundle offer id, if the selected offer is a
+bundle member.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="upgrade" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if the current proposal is an upgrade from this existing offer, false if it is any other
+type of operation.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="ruleKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+In the case of an upgrade, which rule is to be used to upgrade the existing offer to the offer
+defined in the proposal.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="etfHandling" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+In the case of an upgrade, which early termination fee handling should be used. Possible types:
+<dl>
+<dt>CALCULATED</dt>
+<dd>
+a caluclated amount depending on how long the components to be terminated have been
+active
+</dd>
+<dt>FIXED</dt>
+<dd>a fixed amount defined in etfAmount</dd>
+<dt>TOTAL</dt>
+<dd>
+the total initial cost of the components to be terminated
+</dd>
+<dt>WAIVED</dt>
+<dd>no early termination fee</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="etfAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The amount of the early terminaton fee for a etfHandling value of FIXED.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="upDowngradeFee" type="SelectableFeature">
+<xs:annotation>
+<xs:documentation>
+A fee to be added to the proposed offer in case of an upgrade.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="validationError" type="ValidationError"/>
+<xs:complexType name="ValidationError">
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string"/>
+<xs:element minOccurs="0" name="message" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A translated human readable error message.
+Including place holders
+for the given
+arguments
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="arguments" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A list of arguments to be filled in the place
+holders of the error
+message.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="bundleOfferProposal" type="BundleOfferProposal"/>
+<xs:complexType name="BundleOfferProposal">
+<xs:annotation>
+<xs:documentation>
+A Bundle offer proposal includes information about
+selected,
+terminated and available base
+offers and offer
+features
+including parameters, modification information and charges.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractOfferProposal">
+<xs:sequence>
+<xs:element name="offerGroups" type="OfferGroupProposals">
+<xs:annotation>
+<xs:documentation>
+Contains a list of offer groups including
+information about selectable
+base
+offers and
+selected base offer
+instances.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="terminatedBaseOfferProposals" type="TerminatedBaseOfferProposal">
+<xs:annotation>
+<xs:documentation>
+Contains base offers to be deleted in case of a
+bundle modifiy or
+up/downgrade.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="baseOfferProposals" type="BaseOfferProposals"/>
+<xs:complexType name="BaseOfferProposals">
+<xs:annotation>
+<xs:documentation>
+Contains a list of selected base offers with
+selected and available offer
+features, services
+and service
+features
+including parameters, modification information and charges.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="baseOffer" type="BaseOfferProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BaseOfferProposal">
+<xs:annotation>
+<xs:documentation>
+A base offer proposal is a selected and available
+offer features,
+services and service
+features
+including
+parameters,
+modification information and charges.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractOfferProposal">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceProposals" type="ServiceProposals">
+<xs:annotation>
+<xs:documentation>
+The possible and selected services of this single offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="TerminatedBaseOfferProposal">
+<xs:annotation>
+<xs:documentation>
+A base offer that is to be terminated.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="BaseOfferProposal">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="SelectableFeatures">
+<xs:annotation>
+<xs:documentation>
+A list of selectable features for a given component (offer or service).
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="selectableFeature" type="SelectableFeature"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableFeature">
+<xs:annotation>
+<xs:documentation>
+One selectable feature. This is just a template for possible values which will when selected
+generate feature instances.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractFeatureProposal">
+<xs:sequence>
+<xs:element name="selectable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Defines if this feature is still selectable.
+As soon as a defined maximal number of instances of a feature is reached, this changes
+from true to false.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ServiceFeatureProposal">
+<xs:annotation>
+<xs:documentation>
+A service feature proposal. Can have parameters.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="parameters" type="ParameterProposals"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ParameterProposals">
+<xs:annotation>
+<xs:documentation>
+A list of feature parameter proposals.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="parameter" type="ParameterProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ParameterProposal">
+<xs:annotation>
+<xs:documentation>
+A proposal for a parameter of a feature
+containing the definition of a value
+that can be filled for the instance
+created from the parameter proposal's feature.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="defaultValue" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The parameter's default value on instantiation if no other value is set
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The parameter's type. There are the following standard types:
+<dl>
+<dt>ADDRESS</dt>
+<dd>
+an address. The value must be JSON encoded to be correctly parsed by the system.
+</dd>
+<dt>BOOLEAN</dt>
+<dd>true or false</dd>
+<dt>DATE</dt>
+<dd>a date</dd>
+<dt>LIST</dt>
+<dd>a list of values separated by ','</dd>
+<dt>NONE</dt>
+<dd>no parameter</dd>
+<dt>NUMBER</dt>
+<dd>a numeric value</dd>
+<dt>PHONE_NUMBER</dt>
+<dd>a phone number</dd>
+<dt>SELECT</dt>
+<dd>
+a list of possible values, defined in selectableValues.
+</dd>
+<dt>STRING</dt>
+<dd>a free form string</dd>
+</dl>
+Further types may be defined in supplier management.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="regexValidationRule" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A regular expression this value must conform to.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A textual description of the value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="configurable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Currently unused.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Currently unused.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="readOnly" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+The parameter can't be changed from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="changeable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+The parameter can be changed from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationErrors" type="ValidationErrors">
+<xs:annotation>
+<xs:documentation>
+Filled if the parameter's value could not be validated (either it was empty or didn't conform to
+validation rules).
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="selectableValues" type="SelectableValues">
+<xs:annotation>
+<xs:documentation>
+A list of values one of which can be selected. Used for parameter values of type SELECT.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableValues">
+<xs:annotation>
+<xs:documentation>
+One selectable value for a parameter value of type SELECT.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The key of this value. Used to identify the value uniquely.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The display name of this value for display to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Textual description of the value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayOrder" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+The order in which the values are to be presented to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selected" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+true if the value is the one selected for this parameter.
+Can be true only for one value of the list of values.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="charge" type="AbstractCharge">
+<xs:annotation>
+<xs:documentation>
+The charge associated with selecting that value. Different
+values may have different charges associated with them.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractCharge">
+<xs:annotation>
+<xs:documentation>
+Common attributes of a charge.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="chargeType" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The type of the charge. May be one of the following:
+<dl>
+<dt>ONCE_ONLY</dt>
+<dd>to be charged once.</dd>
+<dt>RECURRING</dt>
+<dd>
+to be charged in a defined frequency until a defined end date.
+</dd>
+<dt>INSTALMENT</dt>
+<dd>
+to be charged with a defined number of instalments.
+</dd>
+<dt>DISCOUNT</dt>
+<dd>
+discounting other charges of the offer or account.
+</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="invoiceText" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The text appearing on the invoice if this charge is instantiated for the customer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="glCode" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A code identifying the charge for general ledger reporting.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="productCode" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A code identifying the charge internally.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="billTypeKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The bill type this charge is associated with.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="taxRate" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The charge's tax rate.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="netCharge" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The charge's net value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="grossCharge" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The charge's gross value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="chargeCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The charge's currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="RecurringChargeProposal">
+<xs:annotation>
+<xs:documentation>
+Attributes of a recurring charge.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractCharge">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="paymentFrequencyMonths" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The payment frequency of this charge in months. 1 means it's charged monthly, 2
+bimonthly and so on.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="1" name="chargeInAdvanceMonths" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+How many months in advance this charge is charged.
+If set to 1 the charge for February is charged in January and so on.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OnceOnlyChargeProposal">
+<xs:annotation>
+<xs:documentation>
+Attributes of a once only charge.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractCharge"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="InstalmentChargeProposal">
+<xs:annotation>
+<xs:documentation>
+Attributes of an instalment charge.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractCharge">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="frequencyMonths" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The payment frequency of this charge in months. 1 means it's charged monthly, 2
+bimonthly and so on.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="payRemainderOnTermination" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Should the remaining instalments be paid when the charge is terminated.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="1" name="initialPayments" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of initial payments on the first charging of this instalment.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="1" name="numberOfPayments" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of payments on this instalment.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfPaymentsToMake" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of yet open payments on this instalment.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="OfferGroupProposal">
+<xs:annotation>
+<xs:documentation>
+Contains a list of offer groups including
+information about selectable base
+offers and
+selected base offer
+instances.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The key of the offer group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfSelectedInstances" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+How many members of this group are currently selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="minNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+How many members of this group have to be selected minimally.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="maxNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+How many members of this group can maximally be selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="baseOffers" type="BaseOfferProposals">
+<xs:annotation>
+<xs:documentation>
+Contains the list of selected base offer
+proposals.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="selectableGroupOffers" type="SelectableGroupOffers">
+<xs:annotation>
+<xs:documentation>
+Contains the list of selectable base offers.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OfferGroupProposals">
+<xs:annotation>
+<xs:documentation>
+Contains a list of offer groups including
+information about selectable base
+offers and
+selected base offer
+instances.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="offerGroup" type="OfferGroupProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableGroupOffers">
+<xs:annotation>
+<xs:documentation>
+Contains the list of selectable base offer.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="selectableGroupOffer" type="SelectableGroupOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableGroupOffer">
+<xs:sequence>
+<xs:element name="offerKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The key identifying this offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Textual description of this offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="invoiceName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Text appearing on the invoice for this offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="internalName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Internal name for this offer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element default="true" name="selectable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Specifies if this base offer is currently
+selectable in the containing
+group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AbstractFeatureGroupProposal">
+<xs:annotation>
+<xs:documentation>
+Common attributes of a feature group proposal. A feature group proposal is a container for
+feature proposals that can be selected for the component the group resides in.
+There are feature groups for offers and
+feature groups for services.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+For displaying this feature group to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureGroupType" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The type of features this feature group proposal contains. Can be one of the following:
+<dl>
+<dt>EIP</dt>
+<dd>
+equipment instalment plans (equipments with an instalment charge).
+</dd>
+<dt>EQUIPMENT_RENTAL</dt>
+<dd>equipments with a recurring charge.</dd>
+<dt>EQUIPMENT</dt>
+<dd>equipments with a once only charge.</dd>
+<dt>LEVEL_COMMAND</dt>
+<dd>allowances</dd>
+<dt>DISCOUNT</dt>
+<dd>discounts</dd>
+<dt>CONTRACT</dt>
+<dd>contracts</dd>
+<dt>DEPOSIT</dt>
+<dd>deposits</dd>
+<dt>NONE</dt>
+<dd>
+simple charges (recurring, once only or instalment)
+</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfAllowedInstances" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of feature instances this feature group may have.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="featureSelectionMandatory" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if a feature from this group has to be selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="single" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if a there can be only one feature in this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selectable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if there can yet be features selected in this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="modified" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if this group has been modified internally in the last roundtrip (i.e. a feature dependency
+selected a feature in this group automatically).
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableFeatureGroupProposals">
+<xs:annotation>
+<xs:documentation>
+Container for selectable feature group proposal. Contains attributes of an abstract feature group as
+well as a list of selectable features.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractFeatureGroupProposal">
+<xs:sequence>
+<xs:element minOccurs="0" name="selectableFeatures" type="SelectableFeatures"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ServiceFeatureGroupProposal">
+<xs:annotation>
+<xs:documentation>
+Container for a service feature group proposal. Contains attributes of an abstract feature group as well
+as a list of service feature propsals.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="FeatureGroupProposal">
+<xs:sequence>
+<xs:element minOccurs="0" name="serviceFeatureProposal" type="ServiceFeatureProposal"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FeatureGroupProposals">
+<xs:annotation>
+<xs:documentation>
+Container for a a list of feature group proposals.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="featureGroup" type="FeatureGroupProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FeatureGroupProposal">
+<xs:annotation>
+<xs:documentation>
+An actual feature group proposal containing feature instances.
+Created from a selectable feature group proposal when one of the containing features is selected.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The feature group's key.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Display name of this group to be shown to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Description of the group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureGroupType" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The type of features this feature group proposal contains. Can be one of the following:
+<dl>
+<dt>EIP</dt>
+<dd>
+equipment instalment plans (equipments with an instalment charge).
+</dd>
+<dt>EQUIPMENT_RENTAL</dt>
+<dd>equipments with a recurring charge.</dd>
+<dt>EQUIPMENT</dt>
+<dd>equipments with a once only charge.</dd>
+<dt>LEVEL_COMMAND</dt>
+<dd>allowances</dd>
+<dt>DISCOUNT</dt>
+<dd>discounts</dd>
+<dt>CONTRACT</dt>
+<dd>contracts</dd>
+<dt>DEPOSIT</dt>
+<dd>deposits</dd>
+<dt>NONE</dt>
+<dd>
+simple charges (recurring, once only or instalment)
+</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="featureSelectionMandatory" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if a feature from this group has to be selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfAllowedInstances" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of feature instances this feature group may have.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfSelectedInstances" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Number of feature instances this feature group currently has selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="minNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+Minimal number of instances this feature group has to have.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="maxNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+Number of feature instances this feature group may have.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="single" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if a there can be only one feature in this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="modified" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if this group has been modified internally in the last roundtrip (i.e. a feature dependency
+selected a feature in this group automatically).
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selectable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if there can yet be features selected in this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="categoryKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The category key of this feature group
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationErrors" type="ValidationErrors">
+<xs:annotation>
+<xs:documentation>
+Contains values if this feature group is not correctly configured.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureInstances" type="FeatureInstances">
+<xs:annotation>
+<xs:documentation>
+The selected feature instances of this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="selectableFeatures" type="SelectableFeatures">
+<xs:annotation>
+<xs:documentation>
+The features that could be selected for this group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FeatureInstances">
+<xs:annotation>
+<xs:documentation>
+A container for selected instances of a feature.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="featureInstance" type="FeatureInstance"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AbstractFeatureProposal">
+<xs:annotation>
+<xs:documentation>
+Common attributes for features.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Textual description of the feature
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Name to be displayed to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="provisionable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Describes if the lifecycle of the feature is bound to the offer (false), or if this
+feature's lifecycle is controlled by provisioning, i.e. the activation and deactivation
+is controlled from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="parentChargeClusterKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The feature may have an overrider. If yes, this is the charge cluster identifier of that
+overrider.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="charge" type="AbstractCharge">
+<xs:annotation>
+<xs:documentation>
+The charge of the feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="externalReferenceKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A link to the inventory system for equipment type features.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="hidden" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Tells if the feature should be displayed to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="changeable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Tells if the feature's parameters are fixed.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="name" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The name of the feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayOrder" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Order of this feature inside its group.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="parameters" type="ProductCatalogFeatureParameters">
+<xs:annotation>
+<xs:documentation>
+List of parameters asssociated with this feature. Only used for service features.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="featureInstance" type="FeatureInstance"/>
+<xs:complexType name="FeatureInstance">
+<xs:annotation>
+<xs:documentation>
+A selected instance of a feature.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractFeatureProposal">
+<xs:sequence>
+<xs:element name="deletable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Can this instance be deleted.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="modified" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Has this instance been modified by the system (i.e. been activated by a feature
+dependency).
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationErrors" type="ValidationErrors">
+<xs:annotation>
+<xs:documentation>
+Filled if there have been errors for this feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceProposal" type="ServiceProposal">
+<xs:annotation>
+<xs:documentation>
+Equipment features may have a service associated with them.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="modification" type="ProductCatalogFeatureModification">
+<xs:annotation>
+<xs:documentation>
+If the feature is based on an existing feature, this contains the information about the
+crm instance the feature is based on.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ProductCatalogFeatureModification">
+<xs:annotation>
+<xs:documentation>
+For feature instances based on existing features contains information about the crm instance the feature
+is based on
+as well as possible termination charges incurred when the feature is removed.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="accountComponentId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The crm identifier for the account component the feature instance is based on.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="grossCharge" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The gross charge that has been instantiated in crm for this feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="netCharge" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The net charge that has been instantiated in crm for this feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="chargeCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of this charge that has been instantiated in crm for this feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="taxRate" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The tax rate used for the feature.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="activationDate" type="xs:dateTime">
+<xs:annotation>
+<xs:documentation>
+When the feature was activated in crm.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Name to be shown to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="provisionable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Describes if the lifecycle of the feature is bound to the offer (false), or if this
+feature's lifecycle is controlled by provisioning, i.e. the activation and deactivation
+is controlled from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="openPayments" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+If the feature has an instalment charge, how many payments are still open.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="numberOfPayments" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+If the feature has an instalment charge, how many payments were there.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="payRemainderOnTermination" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+If the feature has an instalment charge, are the remaining charges to be paid on termination.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+The crm identifier of the service the feature has attached to it.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="type" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The modification type of the feature. It may be:
+<dl>
+<dt>CREATE</dt>
+<dd>the feature is to be newly created</dd>
+<dt>UPDATE</dt>
+<dd>
+the feature is to be upgraded from an existing feature
+</dd>
+<dt>RETAIN</dt>
+<dd>
+the feature should be retained on upgrade to another offer
+</dd>
+<dt>DELETE</dt>
+<dd>the feature is to be deleted</dd>
+<dt>IGNORE</dt>
+<dd>the feature is to be ignored</dd>
+</dl>
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureType" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Type of the feature. Corresponds with the feature group type.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="terminationCharge" type="PricedChargeCluster">
+<xs:annotation>
+<xs:documentation>
+The termination charge to be calculated when this feature is DELETEd.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="pricedChargeCluster" type="PricedChargeCluster"/>
+<xs:complexType name="PricedChargeCluster">
+<xs:annotation>
+<xs:documentation>
+Information about termination charges that would have to be paid if the feature containing this element
+was to be removed.
+Used for contracts.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="chargeClusterKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The charge cluster of the termination charge.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="netChargeAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The net charge of the termination charge.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="grossChargeAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The gross charge of the termination charge.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="chargeCurrency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The charge currency of the termination charge.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="graceDate" type="xs:dateTime">
+<xs:annotation>
+<xs:documentation>
+The date from which a configurable grace period starts in which the termination charge is
+waived.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="plannedEndDate" type="xs:dateTime">
+<xs:annotation>
+<xs:documentation>
+The planned end date for this termination charge, after which the termination charge would no
+longer be considered.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="ModificationType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CREATE"/>
+<xs:enumeration value="UPDATE"/>
+<xs:enumeration value="DELETE"/>
+<xs:enumeration value="RETAIN"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="FeatureType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="MANDATORY"/>
+<xs:enumeration value="PROVISIONED"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="ProductCatalogFeatureParameters">
+<xs:annotation>
+<xs:documentation>
+Container for feature parameter instances.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="parameter" type="ProductCatalogFeatureParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProductCatalogFeatureParameter">
+<xs:annotation>
+<xs:documentation>
+A feature parameter instance.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The parameter's value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="defaultValue" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The parameter's default value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Textual descriptio of the parameter.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string">
+<xs:annotation>
+<xs:documentation xmlns="http://www.w3.org/1999/xhtml">
+The parameter's type. There are the following standard types:
+<dl>
+<dt>ADDRESS</dt>
+<dd>
+an address. The value must be JSON encoded to be correctly parsed by the system.
+</dd>
+<dt>BOOLEAN</dt>
+<dd>true or false</dd>
+<dt>DATE</dt>
+<dd>a date</dd>
+<dt>LIST</dt>
+<dd>a list of values separated by ','</dd>
+<dt>NONE</dt>
+<dd>no parameter</dd>
+<dt>NUMBER</dt>
+<dd>a numeric value</dd>
+<dt>PHONE_NUMBER</dt>
+<dd>a phone number</dd>
+<dt>SELECT</dt>
+<dd>
+a list of possible values, defined in selectableValues.
+</dd>
+<dt>STRING</dt>
+<dd>a free form string</dd>
+</dl>
+Further types may be defined in supplier management.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="configurable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Currently unused.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="modified" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Currently unused.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="readOnly" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+The parameter's value can't be changed from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="changeable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+The parameter can be changed from the outside.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationRule" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A regular expression this value must conform to or a service locator lookup for a validation
+bean.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selected" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if the parameter is selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationErrors" type="ValidationErrors">
+<xs:annotation>
+<xs:documentation>
+Filled if the parameter's value is not filled and required or does not conform to validation
+rules.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationRuleDefaultErrorMessage" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+A default error message that will be added to the validation errors if the validationRule does
+not match.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="parameterValues" type="ProductCatalogFeatureParameterValues">
+<xs:annotation>
+<xs:documentation>
+A list of values one of which can be selected. Used for parameter values of type SELECT.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="validationRuleType" type="ValidationRuleType">
+<xs:annotation>
+<xs:documentation>
+Type of validation rule. Can be REGEX or BEAN.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="modification" type="ProductCatalogFeatureParameterModification">
+<xs:annotation>
+<xs:documentation>
+Information about an existing crm value for this parameter.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ValidationErrors" type="ValidationErrors"/>
+<xs:complexType name="ValidationErrors">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="validationError" type="ValidationError"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProductCatalogFeatureParameterModification">
+<xs:annotation>
+<xs:documentation>
+Information about an existing crm value for a feature parameter.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="value" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The parameter's value as stored in crm.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The parameter's description.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="ValidationRuleType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="BEAN"/>
+<xs:enumeration value="REGEX"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="ProductCatalogFeatureParameterValues">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="parameterValue" type="ProductCatalogFeatureParameterValue"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProductCatalogFeatureParameterValue">
+<xs:annotation>
+<xs:documentation>
+One selectable value of a parameter of type SELECT.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The value's key.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The value's name to be displayed to the end user.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The value's description.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="parentChargeClusterKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The value may have an overrider. If yes, this is the charge cluster identifier of that
+overrider.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayOrder" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+Order of the value in its parameter.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selected" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+True if the value has been selected. Only one value may be selected per parameter at a time.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="charge" type="AbstractCharge">
+<xs:annotation>
+<xs:documentation>
+The charge associated with the value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ServiceProposals">
+<xs:annotation>
+<xs:documentation>
+Container for service proposals.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceProposal" type="ServiceProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ServiceProposal">
+<xs:annotation>
+<xs:documentation>
+A proposal for a service to be created.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The key identifiying the service.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="accountComponentId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+If the service proposal is based on an existing service, this is the crm identifier of that
+service.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayName" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The service's display name
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="description" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The service's description
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="displayOrder" type="xs:int">
+<xs:annotation>
+<xs:documentation>
+The service's display order.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="featureGroups" type="FeatureGroupProposals">
+<xs:annotation>
+<xs:documentation>
+Feature groups associated with this service.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="charges" type="AbstractCharges">
+<xs:annotation>
+<xs:documentation>
+A service may have mulitple charges, especially usage charges associated with it.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceProposals" type="ServiceProposals">
+<xs:annotation>
+<xs:documentation>
+Sub services of this service.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="selectableServices" type="SelectableServices">
+<xs:annotation>
+<xs:documentation>
+List of selectable sub services.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableServices">
+<xs:annotation>
+<xs:documentation>
+A list of selectable services.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="selectableService" type="SelectableService"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SelectableService">
+<xs:annotation>
+<xs:documentation>
+One selectable service. This is just a
+template for possible values which will when selected
+generate service instances.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="ServiceProposal">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="minNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+How many instances of this service have to be selected minimally.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="maxNumberOfInstances" type="xs:short">
+<xs:annotation>
+<xs:documentation>
+How many instances of this service can maximally be selected.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="selectable" type="xs:boolean">
+<xs:annotation>
+<xs:documentation>
+Defines if this feature is still selectable.
+As soon as a defined maximal number of instances of a feature is
+reached, this changes
+from true to false.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AbstractCharges">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="charges" type="AbstractCharge"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ServiceGroupProposals">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceFeatureGroupProposal" type="FeatureGroupProposal"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="users" type="Users"/>
+<xs:complexType name="Users">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="user" type="User"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="user" type="User"/>
+<xs:complexType name="User">
+<xs:sequence>
+<xs:element name="userName" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element name="roleKey" type="xs:string"/>
+<xs:element name="emailAddress" type="xs:string"/>
+<xs:element minOccurs="0" name="securityQuestion" type="xs:string"/>
+<xs:element minOccurs="0" name="securityAnswer" type="xs:string"/>
+<xs:element minOccurs="0" name="passwordExpirationDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="nextPossibleLoginDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="languageKey" type="xs:string"/>
+</xs:sequence>
+<xs:attribute default="true" name="isActive" type="xs:boolean"/>
+<xs:attribute default="false" name="isLocked" type="xs:boolean"/>
+</xs:complexType>
+<xs:element name="updatePassword" type="UpdatePassword"/>
+<xs:complexType name="UpdatePassword">
+<xs:sequence>
+<xs:choice>
+<xs:element name="oldPassword" type="xs:string"/>
+<xs:element name="uuid" type="xs:string"/>
+</xs:choice>
+<xs:element name="newPassword" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="userAuthentication" type="UserAuthentication"/>
+<xs:complexType name="UserAuthentication">
+<xs:sequence>
+<xs:element name="password" type="xs:string"/>
+<xs:element minOccurs="0" name="useSecurityPolicies" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="userAuthenticationResponse" type="UserAuthenticationResponse"/>
+<xs:complexType name="UserAuthenticationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="customerId" type="xs:string"/>
+<xs:element name="successful" type="xs:boolean"/>
+<xs:element maxOccurs="1" minOccurs="0" name="faultInfo" type="FaultInfo"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="billedUsages" type="BilledUsages"/>
+<xs:complexType name="BilledUsages">
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="billedUsage" type="BilledUsage"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="billedUsage" type="BilledUsage"/>
+<xs:complexType name="BilledUsage">
+<xs:sequence>
+<xs:element name="billTypeKey" type="xs:string"/>
+<xs:element name="serviceAccountId" type="xs:long"/>
+<xs:element name="serviceIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="invoiceText" type="xs:string"/>
+<xs:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="duration" type="xs:string"/>
+<xs:element minOccurs="0" name="units" type="xs:decimal"/>
+<xs:element minOccurs="0" name="measuringUnitKey" type="xs:string"/>
+<xs:element name="netAmount" type="xs:decimal"/>
+<xs:element name="grossAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of this billed usage.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="taxTypeKey" type="xs:string"/>
+<xs:element minOccurs="0" name="originationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
+<xs:element minOccurs="0" name="destinationCountryCode" type="xs:string"/>
+<xs:element minOccurs="0" name="sessionInfo" type="xs:string"/>
+<xs:element minOccurs="0" name="sourceCustomerId" type="xs:long"/>
+</xs:sequence>
+<xs:attribute default="false" name="isTaxExempt" type="xs:boolean"/>
+</xs:complexType>
+<xs:element name="itemizedInvoice" type="ItemizedInvoice"/>
+<xs:complexType name="ItemizedInvoice">
+<xs:annotation>
+<xs:documentation>
+Contains a list of account charges along with charges and usage sums per bill type, split by separate
+customized offers.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="charges" type="AccountChargesList"/>
+<xs:element maxOccurs="1" minOccurs="0" name="offers" type="CustomizedOfferList"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AccountChargesList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="charge" type="CustOfferCharge"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustomizedOfferList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="offer" type="CustomizedOffer"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ChargeBase">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="invoiceText" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="netAmount" type="xs:decimal"/>
+<xs:element maxOccurs="1" minOccurs="1" name="grossAmount" type="xs:decimal"/>
+<xs:element maxOccurs="1" minOccurs="1" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of the related charge.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="sourceCustomerId" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustOfferCharge">
+<xs:annotation>
+<xs:documentation>
+Charge that is a part of a customized offer. I.e. it can be recurring, once-only or instalment.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="ChargeBase">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="chargedFrom" type="xs:dateTime"/>
+<xs:element maxOccurs="1" minOccurs="0" name="chargedUntil" type="xs:dateTime"/>
+</xs:sequence>
+<xs:attribute name="chargeTypeKey" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CustOfferChargeList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="charge" type="CustOfferCharge"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustOfferUsage">
+<xs:annotation>
+<xs:documentation>
+Represents the sum of all detailed usage records for one bill type.
+That could be the sum of all &#8216;International Calls&#8217; for a mobile offer, where &#8216;International
+Calls&#8217; would be the bill type.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="ChargeBase">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="billTypeKey" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="units" type="xs:long"/>
+<xs:element maxOccurs="1" minOccurs="1" name="measuringUnitKey" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CustOfferUsageList">
+<xs:annotation>
+<xs:documentation>
+A list of all bill types, along with their usage sums.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="usageSumPerBillType" type="CustOfferUsage"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="CustomizedOffer">
+<xs:annotation>
+<xs:documentation>
+Charges and usage sums for a customized offer, along with all service identifiers and net and gross sums
+of all expenses.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="id" type="xs:long"/>
+<xs:element maxOccurs="1" minOccurs="1" name="offerInvoiceText" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="netAmount" type="xs:decimal"/>
+<xs:element maxOccurs="1" minOccurs="1" name="grossAmount" type="xs:decimal"/>
+<xs:element maxOccurs="1" minOccurs="1" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency of the related customized offer's currency.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="serviceIdentifiers" type="ServiceIdentifiersList"/>
+<xs:element maxOccurs="1" minOccurs="0" name="charges" type="CustOfferChargeList"/>
+<xs:element maxOccurs="1" minOccurs="0" name="usageSumsPerBillType" type="CustOfferUsageList"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ServiceIdentifiersList">
+<xs:annotation>
+<xs:documentation>
+A list of all service identifiers, gathered from all charges and usages. Each service identifier occurs
+only once.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="id" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="transactions" type="Transactions"/>
+<xs:complexType name="Transactions">
+<xs:annotation>
+<xs:documentation>
+The list of financial transactions including all invoices, payments for one customer.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="transaction" type="Transaction"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Transaction">
+<xs:annotation>
+<xs:documentation>
+One particular transaction, typeKey gives the type of the transaction like INVOICE, PAYMENT.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="date" type="xs:dateTime">
+<xs:annotation>
+<xs:documentation>
+The effective date of the transaction.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="typeKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The transaction type indicates the type of the line.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="paymentChannelTypeKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The channel type in case of a payment. Values are from ino_ar_payment_mgmt.pmttrxchannels
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="referenceId" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The reference number for the transaction, e.g. invoice id, payment id.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="releatedTo" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The ID to which the transaction is related, e.g. in case of a floating adjustment
+this contains the invoice id where the floating adjustment appears on; if it is
+an invoice the field is empty.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="sourceCustomerId" type="xs:long">
+<xs:annotation>
+<xs:documentation>
+In case of transfer to another customer this is the customer id where the amount was transferred
+to.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="amount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The amount of the transaction e.g. the total amount of an invoice or a payment.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="effectiveAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The effective amount of the transaction e.g. the amount on an invoice minus resolved disputes in
+favour of the customer.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="rollingBalance" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The rolling balance summing up all transactions ordered by date.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="disputedAmount" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+Disputes of an item on an invoice.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="undisputedItemBalance" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The outstanding amount of an invoice, if a dispute is accepted. This will be the amount of
+the invoice minus the payments already assigned to this invoice minus the accepted disputed
+amount.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="currency" type="isoCurrency">
+<xs:annotation>
+<xs:documentation>
+The currency for this transaction's balances.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="createBalance" type="CreateBalance"/>
+<xs:complexType name="CreateBalance">
+<xs:annotation>
+<xs:documentation>
+The balance to be created.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="balanceType" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The balance type, for which to create a balance for.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="value" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The initial value of the created balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="activation" type="xs:date">
+<xs:annotation>
+<xs:documentation>
+The date on which this balance should be activated.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="termination" type="xs:date">
+<xs:annotation>
+<xs:documentation>
+The date on which this balance should be terminated.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="referenceKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The external reference key.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="balances" type="BalanceList"/>
+<xs:complexType name="BalanceList">
+<xs:annotation>
+<xs:documentation>
+A list with all found balances.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="balance" type="Balance"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="balance" type="Balance"/>
+<xs:complexType name="Balance">
+<xs:complexContent>
+<xs:extension base="AbstractBalance"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="AbstractBalance">
+<xs:annotation>
+<xs:documentation>
+One particular balance
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="id" type="nonNegativeLong">
+<xs:annotation>
+<xs:documentation>
+The id representing this balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="type" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The type key of this balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="value" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The value of the balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="unit" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The unit key of this balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="activation" type="xs:date">
+<xs:annotation>
+<xs:documentation>
+The date on which this balance got activated.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="termination" type="xs:date">
+<xs:annotation>
+<xs:documentation>
+The date on which this balance got terminated.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="referenceKey" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+The external reference key.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="balanceTransaction" type="BalanceTransaction"/>
+<xs:complexType name="BalanceTransaction">
+<xs:sequence>
+<xs:element name="id" type="nonNegativeLong">
+<xs:annotation>
+<xs:documentation>
+The id of the history entry
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="balanceId" type="nonNegativeLong">
+<xs:annotation>
+<xs:documentation>
+The id of the balance, where this entry belongs to.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="value" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The value of this balance after the delta value got applied.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="deltaValue" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The value which increases or decreases the current balance value.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="referenceId" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Id of the trigger which caused the balance modification.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="referenceType" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Type of the trigger which caused the balance modification.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="originatingBalanceId" type="nonNegativeLong">
+<xs:annotation>
+<xs:documentation>
+The id of the originating balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="balanceDetails" type="BalanceDetails"/>
+<xs:complexType name="BalanceDetails">
+<xs:annotation>
+<xs:documentation>
+One particular balance and its history entries.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractBalance">
+<xs:sequence>
+<xs:element name="transactions" type="BalanceTransactionList"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="balanceTransactions" type="BalanceTransactionList"/>
+<xs:complexType name="BalanceTransactionList">
+<xs:annotation>
+<xs:documentation>
+A list with all balance history entries.
+</xs:documentation>
+</xs:annotation>
+<xs:complexContent>
+<xs:extension base="AbstractPagedList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="transaction" type="BalanceTransaction"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="balanceDelta" type="BalanceDelta"/>
+<xs:complexType name="BalanceDelta">
+<xs:annotation>
+<xs:documentation>
+The request object to update a specific balance.
+</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element name="value" type="xs:decimal">
+<xs:annotation>
+<xs:documentation>
+The delta value which should be applied to the current balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="referenceId" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Id of the trigger which caused the balance modification.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element name="referenceType" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+Type of the trigger which caused the balance modification.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="originatingBalanceId" type="nonNegativeLong">
+<xs:annotation>
+<xs:documentation>
+The id of the originating balance.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="FeatureGroupCategories">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="featureGroupCategory" type="FeatureGroupDisplayCategory"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
