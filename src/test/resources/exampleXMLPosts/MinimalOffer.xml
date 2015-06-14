@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CreateCustomizedOffer xmlns="http://www.travellazy.com/product/model">
+    <baseOffer>
+        <offerKey>Fixed_line_Anytime</offerKey>
+    </baseOffer>
+    <activationDate>2015-05-17T23:01:14.544+02:00</activationDate>
+    <channelKey>Demo channel</channelKey>
+</CreateCustomizedOffer>
+

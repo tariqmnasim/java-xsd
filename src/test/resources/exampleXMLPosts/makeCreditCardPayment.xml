@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<creditCardPayment xmlns="http://www.travellazy.com/product/model">
+    <amount>22</amount>
+    <currency>EUR</currency>
+    <creditCard xsi:type="UpdateCreditCardDetails">
+        <cardHoldersName>Roger Collins</cardHoldersName>
+        <cardTypeKey>AE</cardTypeKey>
+        <expireMonth>12</expireMonth>
+        <expireYear>2015</expireYear>
+        <cardNumber>371449635398431</cardNumber>
+        <securityCode>1234</securityCode>
+    </creditCard>
+</creditCardPayment>
