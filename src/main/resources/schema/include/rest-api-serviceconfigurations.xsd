@@ -1,241 +1,249 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.infonova.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<xs:include schemaLocation="rest-api-commons.xsd"/>
-<xs:element name="serviceConfiguration" type="ServiceConfiguration"/>
-<xs:complexType name="ServiceConfiguration">
-<xs:sequence>
-<xs:element minOccurs="0" name="services" type="Services"/>
-<xs:element minOccurs="0" name="serviceProviders">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceProvider" type="ServiceProvider"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element minOccurs="0" name="serviceSpecifications">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceSpecification" type="ServiceSpecification"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element minOccurs="0" name="characteristics">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="characteristic" type="Characteristic"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:element name="services" type="Services"/>
-<xs:complexType name="Services">
-<xs:complexContent>
-<xs:extension base="AbstractPagedList">
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="service" type="Service"/>
-</xs:sequence>
-</xs:extension>
-</xs:complexContent>
-</xs:complexType>
-<xs:complexType name="Service">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element name="serviceProviderKey" type="xs:string"/>
-<xs:element name="serviceSpecificationKey" type="xs:string"/>
-<xs:element minOccurs="0" name="displayName" type="xs:string"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-<xs:element name="activation" type="xs:date"/>
-<xs:element minOccurs="0" name="termination" type="xs:date"/>
-<xs:element minOccurs="0" name="workflows">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="workflow">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="serviceProvisioningTypeKey" type="xs:string"/>
-<xs:element name="workflowDefinitionName" type="xs:string"/>
-</xs:sequence>
-<xs:attribute default="jbpm" name="type">
-<xs:simpleType>
-<xs:restriction base="xs:string">
-<xs:enumeration value="jbpm"/>
-<xs:enumeration value="activiti"/>
-</xs:restriction>
-</xs:simpleType>
-</xs:attribute>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element maxOccurs="1" minOccurs="0" name="subServices">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="subService">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="serviceKey" type="NonEmptyString"/>
-<xs:element name="minNumberOfInstances">
-<xs:simpleType>
-<xs:restriction base="xs:int">
-<xs:minInclusive value="0"/>
-</xs:restriction>
-</xs:simpleType>
-</xs:element>
-<xs:element minOccurs="0" name="maxNumberOfInstances">
-<xs:simpleType>
-<xs:restriction base="xs:int">
-<xs:minInclusive value="1"/>
-</xs:restriction>
-</xs:simpleType>
-</xs:element>
-<xs:element minOccurs="0" name="activation" type="xs:date"/>
-<xs:element minOccurs="0" name="termination" type="xs:date"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="ServiceProvider">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-<xs:element name="account" type="ServiceProviderAccount"/>
-<xs:element minOccurs="0" name="mediationFeeds">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="mediationFeed" type="MediationFeed"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="ServiceProviderAccount">
-<xs:sequence>
-<xs:element name="firstName" type="xs:string"/>
-<xs:element name="lastName" type="xs:string"/>
-<xs:element minOccurs="0" name="entityTypeKey" type="xs:string"/>
-<xs:element name="address" type="ServiceProviderAddress"/>
-<xs:element name="phoneNumber" type="xs:string"/>
-<xs:element minOccurs="0" name="email" type="xs:string"/>
-<xs:element minOccurs="0" name="billCycleId" type="xs:long"/>
-<xs:element maxOccurs="1" minOccurs="0" name="invoiceCurrency" type="xs:string">
-<xs:annotation>
-<xs:documentation>
-Three letter iso-code of the serviceproviders currency. Charges of different currency are exchanged at billrun, so that the serviceprovider receives the invoice in this currency. Cannot be changed.
-</xs:documentation>
-</xs:annotation>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="ServiceProviderAddress">
-<xs:complexContent>
-<xs:extension base="AbstractAddress"/>
-</xs:complexContent>
-</xs:complexType>
-<xs:complexType name="MediationFeed">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-<xs:element minOccurs="0" name="mediationEvents">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="mediationEvent">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-<xs:attribute default="false" name="createServiceProviderUsageRecords" type="xs:boolean">
-<xs:annotation>
-<xs:documentation>
-Defines if an extra usage record for the service provider shall be created.
-</xs:documentation>
-</xs:annotation>
-</xs:attribute>
-</xs:complexType>
-<xs:complexType name="ServiceSpecification">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element name="description" type="xs:string"/>
-<xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
-<xs:element minOccurs="0" name="serviceSpecificationCharacteristics">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceSpecificationCharacteristic" type="ServiceSpecificationCharacteristic"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-<xs:attribute name="isActive" type="xs:boolean" use="required"/>
-</xs:complexType>
-<xs:complexType name="ServiceSpecificationCharacteristic">
-<xs:sequence>
-<xs:element name="characteristicKey" type="xs:string"/>
-<xs:element name="characteristicTypeKey" type="xs:string"/>
-<xs:element minOccurs="0" name="displayName" type="xs:string"/>
-<xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-<xs:element minOccurs="0" name="defaultValue" type="xs:string"/>
-<xs:element minOccurs="0" name="maxNumberOfInstances" type="xs:integer"/>
-<xs:element minOccurs="0" name="validationErrorMessage" type="xs:string"/>
-<xs:element minOccurs="0" name="validationRule" type="xs:string"/>
-<xs:element minOccurs="0" name="serviceCharacteristicValues">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="serviceCharacteristicValue" type="CharacteristicValue"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-<xs:attribute name="isHidden" type="xs:boolean" use="required"/>
-<xs:attribute name="isReadOnly" type="xs:boolean" use="required"/>
-<xs:attribute name="isMandatory" type="xs:boolean" use="required"/>
-<xs:attribute name="isDefaultActive" type="xs:boolean" use="required"/>
-<xs:attribute name="isChangeable" type="xs:boolean" use="required"/>
-<xs:attribute default="false" name="isChangeableDuringProvisioning" type="xs:boolean" use="optional"/>
-<xs:attribute default="false" name="isGroupIdentifier" type="xs:boolean" use="optional"/>
-<xs:attribute name="isSearchable" type="xs:boolean" use="optional"/>
-<xs:attribute default="false" name="isServiceIdentifier" type="xs:boolean" use="optional"/>
-<xs:attribute default="false" name="isServiceAddress" type="xs:boolean" use="optional"/>
-<xs:attribute default="false" name="isDeliveryAddress" type="xs:boolean" use="optional"/>
-</xs:complexType>
-<xs:complexType name="Characteristic">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element name="characteristicTypeKey" type="xs:string"/>
-<xs:element name="displayName" type="xs:string"/>
-<xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-<xs:element minOccurs="0" name="defaultValue" type="xs:string"/>
-<xs:element minOccurs="0" name="validationErrorMessage" type="xs:string"/>
-<xs:element minOccurs="0" name="validationRule" type="xs:string"/>
-<xs:element minOccurs="0" name="characteristicValues">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="characteristicValue" type="CharacteristicValue"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-<xs:attribute name="isSearchable" type="xs:boolean" use="required"/>
-</xs:complexType>
-<xs:complexType name="CharacteristicValue">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element name="displayName" type="xs:string"/>
-<xs:element name="displayOrder" type="xs:int"/>
-<xs:element minOccurs="0" name="description" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model"
+           xmlns:tl="http://www.travellazy.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="rest-api-commons.xsd"/>
+    <xs:element name="serviceConfiguration" type="tl:ServiceConfiguration"/>
+    <xs:complexType name="ServiceConfiguration">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="services" type="tl:Services"/>
+            <xs:element minOccurs="0" name="serviceProviders">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceProvider" type="tl:ServiceProvider"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="serviceSpecifications">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceSpecification"
+                                    type="tl:ServiceSpecification"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="characteristics">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="characteristic" type="tl:Characteristic"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="services" type="tl:Services"/>
+    <xs:complexType name="Services">
+        <xs:complexContent>
+            <xs:extension base="tl:AbstractPagedList">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="service" type="tl:Service"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Service">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element name="serviceProviderKey" type="xs:string"/>
+            <xs:element name="serviceSpecificationKey" type="xs:string"/>
+            <xs:element minOccurs="0" name="displayName" type="xs:string"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element name="activation" type="xs:date"/>
+            <xs:element minOccurs="0" name="termination" type="xs:date"/>
+            <xs:element minOccurs="0" name="workflows">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="workflow">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="serviceProvisioningTypeKey" type="xs:string"/>
+                                    <xs:element name="workflowDefinitionName" type="xs:string"/>
+                                </xs:sequence>
+                                <xs:attribute default="jbpm" name="type">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:enumeration value="jbpm"/>
+                                            <xs:enumeration value="activiti"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="subServices">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="subService">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="serviceKey" type="tl:NonEmptyString"/>
+                                    <xs:element name="minNumberOfInstances">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:int">
+                                                <xs:minInclusive value="0"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" name="maxNumberOfInstances">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:int">
+                                                <xs:minInclusive value="1"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:element>
+                                    <xs:element minOccurs="0" name="activation" type="xs:date"/>
+                                    <xs:element minOccurs="0" name="termination" type="xs:date"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceProvider">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element name="account" type="tl:ServiceProviderAccount"/>
+            <xs:element minOccurs="0" name="mediationFeeds">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="mediationFeed" type="tl:MediationFeed"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceProviderAccount">
+        <xs:sequence>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+            <xs:element minOccurs="0" name="entityTypeKey" type="xs:string"/>
+            <xs:element name="address" type="tl:ServiceProviderAddress"/>
+            <xs:element name="phoneNumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="email" type="xs:string"/>
+            <xs:element minOccurs="0" name="billCycleId" type="xs:long"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="invoiceCurrency" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>
+                        Three letter iso-code of the serviceproviders currency. Charges of different currency are
+                        exchanged at billrun, so that the serviceprovider receives the invoice in this currency. Cannot
+                        be changed.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceProviderAddress">
+        <xs:complexContent>
+            <xs:extension base="tl:AbstractAddress"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MediationFeed">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="mediationEvents">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="mediationEvent">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="key" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute default="false" name="createServiceProviderUsageRecords" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation>
+                    Defines if an extra usage record for the service provider shall be created.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ServiceSpecification">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
+            <xs:element minOccurs="0" name="serviceSpecificationCharacteristics">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceSpecificationCharacteristic"
+                                    type="tl:ServiceSpecificationCharacteristic"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="isActive" type="xs:boolean" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ServiceSpecificationCharacteristic">
+        <xs:sequence>
+            <xs:element name="characteristicKey" type="xs:string"/>
+            <xs:element name="characteristicTypeKey" type="xs:string"/>
+            <xs:element minOccurs="0" name="displayName" type="xs:string"/>
+            <xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="defaultValue" type="xs:string"/>
+            <xs:element minOccurs="0" name="maxNumberOfInstances" type="xs:integer"/>
+            <xs:element minOccurs="0" name="validationErrorMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="validationRule" type="xs:string"/>
+            <xs:element minOccurs="0" name="serviceCharacteristicValues">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceCharacteristicValue"
+                                    type="tl:CharacteristicValue"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="isHidden" type="xs:boolean" use="required"/>
+        <xs:attribute name="isReadOnly" type="xs:boolean" use="required"/>
+        <xs:attribute name="isMandatory" type="xs:boolean" use="required"/>
+        <xs:attribute name="isDefaultActive" type="xs:boolean" use="required"/>
+        <xs:attribute name="isChangeable" type="xs:boolean" use="required"/>
+        <xs:attribute default="false" name="isChangeableDuringProvisioning" type="xs:boolean" use="optional"/>
+        <xs:attribute default="false" name="isGroupIdentifier" type="xs:boolean" use="optional"/>
+        <xs:attribute name="isSearchable" type="xs:boolean" use="optional"/>
+        <xs:attribute default="false" name="isServiceIdentifier" type="xs:boolean" use="optional"/>
+        <xs:attribute default="false" name="isServiceAddress" type="xs:boolean" use="optional"/>
+        <xs:attribute default="false" name="isDeliveryAddress" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="Characteristic">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element name="characteristicTypeKey" type="xs:string"/>
+            <xs:element name="displayName" type="xs:string"/>
+            <xs:element minOccurs="0" name="displayOrder" type="xs:int"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="defaultValue" type="xs:string"/>
+            <xs:element minOccurs="0" name="validationErrorMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="validationRule" type="xs:string"/>
+            <xs:element minOccurs="0" name="characteristicValues">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="characteristicValue"
+                                    type="tl:CharacteristicValue"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="isSearchable" type="xs:boolean" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="CharacteristicValue">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element name="displayName" type="xs:string"/>
+            <xs:element name="displayOrder" type="xs:int"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

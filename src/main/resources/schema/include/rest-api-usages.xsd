@@ -1,87 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" jaxb:version="2.0" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.infonova.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<xs:annotation>
-<xs:documentation>
-This is the model used to receive usage feed adapter related information.
-</xs:documentation>
-</xs:annotation>
-<xs:include schemaLocation="rest-api-commons.xsd"/>
-<xs:complexType abstract="true" name="UsageData">
-<xs:sequence>
-<xs:element name="serviceIdentifier" type="xs:string"/>
-<xs:element name="mediationEventKey" type="xs:string"/>
-<xs:element name="mediationFeedKey" type="xs:string"/>
-<xs:element name="eventTimestamp" type="xs:dateTime"/>
-<xs:element name="dataType" type="xs:string"/>
-<xs:element minOccurs="0" name="providerPrice" type="xs:float"/>
-<xs:element minOccurs="0" name="uniqueExternalIdentifier" type="xs:string"/>
-<xs:element minOccurs="0" name="additionalAttributes" type="AdditionalUsageAttributes"/>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="AdditionalUsageAttributes">
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="entry" type="AdditionalUsageAttribute"/>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="AdditionalUsageAttribute">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element minOccurs="0" name="value" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-<xs:element name="eventBasedUsageData">
-<xs:complexType>
-<xs:complexContent>
-<xs:extension base="UsageData">
-<xs:sequence>
-<xs:element minOccurs="0" name="originatingCountryCode" type="xs:int"/>
-<xs:element minOccurs="0" name="originatingNumber" type="xs:long"/>
-<xs:element minOccurs="0" name="destinationCountryCode" type="xs:int"/>
-<xs:element minOccurs="0" name="destinationNumber" type="xs:long"/>
-<xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
-<xs:element name="quantity" type="xs:int"/>
-<xs:element name="measuringUnit" type="xs:string"/>
-</xs:sequence>
-</xs:extension>
-</xs:complexContent>
-</xs:complexType>
-</xs:element>
-<xs:element name="volumeBasedUsageData">
-<xs:complexType>
-<xs:complexContent>
-<xs:extension base="UsageData">
-<xs:sequence>
-<xs:element name="quantity" type="xs:long"/>
-<xs:element name="duration" type="xs:int"/>
-<xs:element name="measuringUnit" type="xs:string"/>
-</xs:sequence>
-</xs:extension>
-</xs:complexContent>
-</xs:complexType>
-</xs:element>
-<xs:element name="timeBasedUsageData">
-<xs:complexType>
-<xs:complexContent>
-<xs:extension base="UsageData">
-<xs:sequence>
-<xs:element minOccurs="0" name="originatingCountryCode" type="xs:int"/>
-<xs:element minOccurs="0" name="originatingNumber" type="xs:long"/>
-<xs:element minOccurs="0" name="destinationCountryCode" type="xs:int"/>
-<xs:element minOccurs="0" name="destinationNumber" type="xs:long"/>
-<xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
-<xs:element name="duration" type="xs:int"/>
-</xs:sequence>
-</xs:extension>
-</xs:complexContent>
-</xs:complexType>
-</xs:element>
-<xs:element name="usagesResult" type="UsagesResult"/>
-<xs:complexType name="UsagesResult">
-<xs:sequence>
-<xs:choice>
-<xs:element name="usageDataRecordId" type="xs:long"/>
-<xs:element name="errorMessage" type="xs:string"/>
-</xs:choice>
-</xs:sequence>
-</xs:complexType>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.0" targetNamespace="http://www.travellazy.com/product/model"
+           xmlns:tl="http://www.travellazy.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>
+            This is the model used to receive usage feed adapter related information.
+        </xs:documentation>
+    </xs:annotation>
+    <xs:include schemaLocation="rest-api-commons.xsd"/>
+    <xs:complexType abstract="true" name="UsageData">
+        <xs:sequence>
+            <xs:element name="serviceIdentifier" type="xs:string"/>
+            <xs:element name="mediationEventKey" type="xs:string"/>
+            <xs:element name="mediationFeedKey" type="xs:string"/>
+            <xs:element name="eventTimestamp" type="xs:dateTime"/>
+            <xs:element name="dataType" type="xs:string"/>
+            <xs:element minOccurs="0" name="providerPrice" type="xs:float"/>
+            <xs:element minOccurs="0" name="uniqueExternalIdentifier" type="xs:string"/>
+            <xs:element minOccurs="0" name="additionalAttributes" type="tl:AdditionalUsageAttributes"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdditionalUsageAttributes">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry" type="tl:AdditionalUsageAttribute"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdditionalUsageAttribute">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element minOccurs="0" name="value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="eventBasedUsageData">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="tl:UsageData">
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="originatingCountryCode" type="xs:int"/>
+                        <xs:element minOccurs="0" name="originatingNumber" type="xs:long"/>
+                        <xs:element minOccurs="0" name="destinationCountryCode" type="xs:int"/>
+                        <xs:element minOccurs="0" name="destinationNumber" type="xs:long"/>
+                        <xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
+                        <xs:element name="quantity" type="xs:int"/>
+                        <xs:element name="measuringUnit" type="xs:string"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="volumeBasedUsageData">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="tl:UsageData">
+                    <xs:sequence>
+                        <xs:element name="quantity" type="xs:long"/>
+                        <xs:element name="duration" type="xs:int"/>
+                        <xs:element name="measuringUnit" type="xs:string"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="timeBasedUsageData">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="tl:UsageData">
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="originatingCountryCode" type="xs:int"/>
+                        <xs:element minOccurs="0" name="originatingNumber" type="xs:long"/>
+                        <xs:element minOccurs="0" name="destinationCountryCode" type="xs:int"/>
+                        <xs:element minOccurs="0" name="destinationNumber" type="xs:long"/>
+                        <xs:element minOccurs="0" name="destinationInfo" type="xs:string"/>
+                        <xs:element name="duration" type="xs:int"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="usagesResult" type="tl:UsagesResult"/>
+    <xs:complexType name="UsagesResult">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="usageDataRecordId" type="xs:long"/>
+                <xs:element name="errorMessage" type="xs:string"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

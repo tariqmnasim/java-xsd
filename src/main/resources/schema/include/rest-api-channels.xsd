@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model" xmlns="http://www.travellazy.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<xs:element name="channel" type="Channel"/>
-<xs:complexType name="Channel">
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element name="businessName" type="xs:string"/>
-<xs:element name="status" type="xs:string"/>
-<xs:element name="type" type="xs:string"/>
-<xs:element minOccurs="0" name="parentChannelKey" type="xs:string"/>
-<xs:element minOccurs="0" name="subchannels">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="subChannelKey" nillable="true" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element minOccurs="0" name="parameters">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="parameter">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="key" type="xs:string"/>
-<xs:element minOccurs="0" name="value" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
+<xs:schema elementFormDefault="qualified" jaxb:version="2.1" targetNamespace="http://www.travellazy.com/product/model"
+           xmlns:tl="http://www.travellazy.com/product/model" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="channel" type="tl:Channel"/>
+    <xs:complexType name="Channel">
+        <xs:sequence>
+            <xs:element name="key" type="xs:string"/>
+            <xs:element name="businessName" type="xs:string"/>
+            <xs:element name="status" type="xs:string"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element minOccurs="0" name="parentChannelKey" type="xs:string"/>
+            <xs:element minOccurs="0" name="subchannels">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="subChannelKey" nillable="true"
+                                    type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="parameters">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="parameter">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="key" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>
